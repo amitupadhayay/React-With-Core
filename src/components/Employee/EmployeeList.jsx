@@ -119,7 +119,7 @@ function EmployeeList(props) {
             title: 'confirm',
             message: 'Are you sure?'
         });
-        setConfimDialog(true);
+        setConfimDialog(true); 
     }
 
     return (
