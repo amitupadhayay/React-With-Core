@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import CoreService from './components/Core/CoreService';
 
 function App() {
-
+ 
   return (
     <>
       <BrowserRouter>
