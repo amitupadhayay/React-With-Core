@@ -8,12 +8,6 @@ import CoreService from './components/Core/CoreService';
 
 function App() {
 
-  //const [authenticated, setAuthenticated] = useState(false);
-
-  // useEffect(() => {
-  //   setAuthenticated(CoreService.checkToken());
-  // }, []);
-
   return (
     <>
       <BrowserRouter>
