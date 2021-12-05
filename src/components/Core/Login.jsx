@@ -57,7 +57,7 @@ function Login(props) {
                     if (response.data.Token != null) {
                         localStorage.setItem('token', response.data.Token);
                         toast.success('Login done successfully');
-                        RouteService.navigate('employee');
+                        RouteService.navigate('/employee');
                     }
                     else {
                         toast.error('Username or Password is incorrect');
@@ -74,7 +74,7 @@ function Login(props) {
             <div className='full-width flex second-back-color hgt-100 absolute'>
                 <div className='width-33'></div>
                 <div className='width-33 text-center login-mt'>
-                    <Card className='main-back-color'>
+                    <Card>
                         <CardContent>
                             <form className='form' onSubmit={formik.handleSubmit} onBlur={handleBlur} autoComplete="off">
                                 <Grid container spacing={3}>

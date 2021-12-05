@@ -5,19 +5,15 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './components/Core/Login';
 import React, { useState, useEffect } from 'react';
 import CoreService from './components/Core/CoreService';
+import Sidenav from './components/Core/Sidenav'
 
 function App() {
  
   return (
     <>
       <BrowserRouter>
-        <Navbar></Navbar>
-        {/* {authenticated == false ?
-          <Switch>
-            <Route exact path='/' component={Login}></Route>
-            <Route exact path='/login' component={Login}></Route>
-          </Switch>
-          : null} */}
+        <Navbar></Navbar>        
+        {/* <Sidenav></Sidenav> */}
       </BrowserRouter>
 
     </>

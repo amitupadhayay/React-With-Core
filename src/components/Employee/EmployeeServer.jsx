@@ -17,7 +17,7 @@ function EmployeeServer(props) {
     const [columns, setColumns] = useState([]);
     const [employeeList, setEmployeeList] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
 
     useEffect(() => {
         getList();
@@ -49,7 +49,7 @@ function EmployeeServer(props) {
         <div>
 
             <DataTable
-                title="Employee Server"
+                title=""
                 columns={columns}
                 data={employeeList}
                 pagination

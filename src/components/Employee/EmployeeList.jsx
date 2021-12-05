@@ -16,7 +16,8 @@ import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { toast } from 'react-toastify';
-import ConfirmComponent from '../../CommonComponent/ConfirmComponent'
+import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
+import RouteService from '../../Services/RouteService';
 
 
 function EmployeeList(props) {
@@ -31,18 +32,17 @@ function EmployeeList(props) {
     useEffect(() => {
         getEmployeeList();
         getColumns();
-        //attachDialogData(null);
     }, []);
 
     const getColumns = () => {
         let cols = EmployeeService.getColumns();
         cols.push({
             name: '', sortable: false, width: '50px',
-            cell: (row, index) => <div class='flex'>
-                <div class='width-50'>
+            cell: (row, index) => <div className='flex'>
+                <div className='width-50'>
                     <FaIcons.FaUserEdit className='main-color' onClick={() => handleEdit(row)}></FaIcons.FaUserEdit>
                 </div>
-                <div class='width-50 pl-8'>
+                <div className='width-50 pl-8'>
                     <AiIcons.AiFillDelete className='main-color' onClick={() => handleDelete(row)}></AiIcons.AiFillDelete>,
                 </div>
             </div>
@@ -122,6 +122,11 @@ function EmployeeList(props) {
         setConfimDialog(true); 
     }
 
+    const goToEmployeeServer = ()=>{
+        //props.history.push('/employeeserver');
+        RouteService.navigate(props,'/employeeserver');
+    }
+
     return (
         <div>
 
@@ -140,6 +145,10 @@ function EmployeeList(props) {
                     progressComponent={<CommonLoaderIcon />}
                     persistTableHead
                 />
+            </div>
+
+            <div>
+            <span onClick={() => goToEmployeeServer()}><FaIcons.FaUserPlus></FaIcons.FaUserPlus> Employee Server</span>
             </div>
 
             <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>

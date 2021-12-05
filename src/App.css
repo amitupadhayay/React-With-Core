@@ -257,3 +257,7 @@ margin-top: 8px;
   .relative{
     position: relative;
   }
+
+  .pointer{
+    cursor: pointer;
+  }

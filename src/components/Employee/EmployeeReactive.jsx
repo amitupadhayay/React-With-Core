@@ -48,7 +48,7 @@ function EmployeeReactive(props) {
         <div>
 
             <DataTable
-                title="Employee Reactive"
+                title=""
                 columns={columns}
                 data={employeeList}
                 pagination

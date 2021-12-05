@@ -1,17 +1,28 @@
-// export class UserModel {
-//     string EmployeeId;
+import React from "react";
+import PropTypes from "prop-types";
 
-//     string FirstName;
+// export class Employee {
+//   EmployeeId: string;
+//   FirstName: string;
+//   LastName: string;
+//   Salary: string;
+//   Address1: string;
+//   Address2: string;
+//   CreatedDate?: Date;
+//   ModifiedDate?: Date;
+// }
 
-//     string LastName ;
+// Component.propTypes = {
+//   // email: isEmail,
+//   // fullname: PropTypes.string,
+//   // date: PropTypes.instanceOf(Date)
 
-//     decimal Salary ;
-
-//     string Address1 ;
-
-//     string Address2 ;
-
-//     DateTime? CreatedDate; 
-
-//     DateTime? ModifiedDate ;
+//   EmployeeId: PropTypes.string,
+//   FirstName: PropTypes.string,
+//   LastName: PropTypes.string,
+//   Salary: PropTypes.string,
+//   Address1: PropTypes.string,
+//   Address2: PropTypes.string,
+//   CreatedDate: PropTypes.Date,
+//   ModifiedDate: PropTypes.Date,
 // }

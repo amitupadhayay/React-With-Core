@@ -16,6 +16,7 @@ import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
 import Notify, { AlertTypes } from '../../Services/Notify';
 import { toast } from 'react-toastify';
+import PropTypes from "prop-types";
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -26,6 +27,7 @@ function EmployeeForm(props) {
 
     const [open, setOpen] = useState(false);
     const [dialogData, setDialogData] = useState(props.data);
+   // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
 
     useEffect(() => {
         setFormValue();
@@ -54,13 +56,9 @@ function EmployeeForm(props) {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             let asd = formik.errors;
-            //console.log(values);
         },
-        // onChange: () => {
-        //     let asds = formik;
-        // }
         onChange: () => {
-            console.log('test');
+            //console.log('test');
         }
     });
 
@@ -93,19 +91,17 @@ function EmployeeForm(props) {
             // formik.touched.address1 = true;
             // formik.touched.address2 = true;
 
-            formik.validateForm();
+            //formik.validateForm();
         }
     }
 
     const handleBlur = (e) => {
-        setTimeout(() => {
-            formik.setFieldTouched(e.target.name, true);
-        }, 10);
+        formik.setFieldTouched(e.target.name, true);
     }
 
     const addEmplyee = () => {
         if (formik.isValid) {
-            var val = {
+            let formData = {
                 EmployeeId: dialogData.row == null ? 0 : dialogData.row.EmployeeId,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
@@ -116,7 +112,7 @@ function EmployeeForm(props) {
                 ModifiedDate: new Date(),
             };
 
-            EmployeeService.saveEmployee(val)
+            EmployeeService.saveEmployee(formData)
                 .then(response => {
                     if (dialogData.employeeId == 0) {
                         toast.success('Employee added successfully');
@@ -186,14 +182,19 @@ function EmployeeForm(props) {
 
 
         </div>
-
-
-
-
-
-
-
     )
-
 }
+
+
+EmployeeForm.propTypes = {
+    EmployeeId: PropTypes.string,
+    FirstName: PropTypes.string,
+    LastName: PropTypes.string,
+    Salary: PropTypes.string,
+    Address1: PropTypes.string,
+    Address2: PropTypes.string,
+    // CreatedDate: PropTypes.Date,
+    // ModifiedDate: PropTypes.Date,
+  }
+
 export default EmployeeForm;
