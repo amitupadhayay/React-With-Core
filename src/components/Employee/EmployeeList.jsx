@@ -134,7 +134,7 @@ function EmployeeList(props) {
                 <span onClick={() => attachDialogData(null)}><FaIcons.FaUserPlus></FaIcons.FaUserPlus>  Add Employee</span>
             </div>
 
-            <div class='pt-36'>
+            <div className='pt-36'>
                 <DataTable
                     title=""
                     columns={columns}

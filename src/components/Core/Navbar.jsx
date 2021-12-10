@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import './Navbar.css'
+import './Navbar.css';
 import '../../App.css'
 import { IconContext } from 'react-icons';
 import { Router, Switch, Route, withRouter, useLocation } from 'react-router-dom';
@@ -21,7 +21,6 @@ import CoreService from './CoreService';
 import RouteService from '../../Services/RouteService';
 
 
-
 function Navbar(props) {
 
     //const location = useLocation();
@@ -30,6 +29,7 @@ function Navbar(props) {
     const [pageName, setPageName] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [currentUrl, setCurrentUrl] = useState('');
 
     const history = createBrowserHistory();
     const location = useLocation();
@@ -37,8 +37,8 @@ function Navbar(props) {
     useEffect(() => {
         getAappMenuList();
         checkAuthenticated();
-        console.log('handle route change here', location);
-        getPageName(location.pathname);
+        //console.log('handle route change here', location);
+        getPageName(history.location.pathname);
     }, [location]);
 
     const checkAuthenticated = () => {
@@ -61,7 +61,7 @@ function Navbar(props) {
 
     function setNavActive(url) {
         url = url.replace('/', '');
-        let str = window.location.pathname.split('/');
+        let str = history.location.pathname.split('/');
         if (str[1] == url) {
             return 'nav-text nav-active';
         }
@@ -70,7 +70,7 @@ function Navbar(props) {
         }
     }
 
-    const getPageName = (name) => {
+    const getPageName = (name) => {       
         if (name == "/" || name == "/employee") {
             name = "Employee"
         }
@@ -83,7 +83,7 @@ function Navbar(props) {
         else {
             name = name.replace('/', '');
         }
-        setPageName(name);
+        //setPageName(name);       
     }
 
     const handleProfileClick = (event) => {
@@ -102,11 +102,14 @@ function Navbar(props) {
     history.listen((location, action) => {
         //console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
         //console.log(`The last navigation action was ${action}`);
-        //getPageName(location.pathname);
+        //getPageName(location.pathname);        
     })
 
-    const RedirectToPage = (url) => {
+    const RedirectToPage = (url) => {   
+        //url= url.replace('/','');
+        //setCurrentUrl(url);     
         RouteService.navigateByHistory(history, url);
+        //getPageName(url);      
     }
 
     return (
@@ -149,13 +152,14 @@ function Navbar(props) {
                             </li>
 
                             {appList.map((item, index) => (
-                                <li key={index} className={setNavActive(item.url)}>
+                                <li key={index} className={currentUrl==item.url ? 'nav-text nav-active' : 'nav-text'}
+                                onClick={() => RedirectToPage(item.url)}>
                                     {/* <Link to={item.url}>
                                         {item.icon}
                                         <span>{item.AppName}</span>
                                     </Link> */}
                                     {item.icon}
-                                    <span className='white-color pointer' onClick={() => RedirectToPage(item.url)}> {item.AppName} </span>
+                                    <span className='white-color pointer'> {item.AppName} </span>
                                 </li>
                             ))}
 
@@ -187,4 +191,4 @@ function Navbar(props) {
     )
 }
 
-export default withRouter(Navbar);
+export default Navbar;

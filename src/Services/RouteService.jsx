@@ -14,6 +14,5 @@ class RouteService {
     navigateByHistory(history,url) {
         history.push(url);
     }
-
 }
-export default new RouteService();;
+export default new RouteService();

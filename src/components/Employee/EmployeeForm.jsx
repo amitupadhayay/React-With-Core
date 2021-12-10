@@ -27,19 +27,30 @@ function EmployeeForm(props) {
 
     const [open, setOpen] = useState(false);
     const [dialogData, setDialogData] = useState(props.data);
-   // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
+    // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
 
     useEffect(() => {
         setFormValue();
     }, [])
 
     const setInitialValue = () => {
-        return {
-            firstname: '',
-            lastname: '',
-            salary: '',
-            address1: '',
-            address2: ''
+        if (dialogData.employeeId != 0) {
+            return {
+                firstname: dialogData.row.FirstName,
+                lastname: dialogData.row.LastName,
+                salary: dialogData.row.Salary,
+                address1: dialogData.row.Address1,
+                address2: dialogData.row.Address2,
+            }
+        }
+        else {
+            return {
+                firstname: '',
+                lastname: '',
+                salary: '',
+                address1: '',
+                address2: ''
+            }
         }
     };
 
@@ -63,36 +74,37 @@ function EmployeeForm(props) {
     });
 
     const setFormValue = () => {
-        if (dialogData.employeeId != 0) {
-            formik.setFieldValue('firstname', dialogData.row.FirstName);
-            formik.setFieldValue('lastname', dialogData.row.LastName);
-            formik.setFieldValue('salary', dialogData.row.Salary);
-            formik.setFieldValue('address1', dialogData.row.Address1);
-            formik.setFieldValue('address2', dialogData.row.Address2);
+        // if (dialogData.employeeId != 0) {
+        //     formik.setFieldValue('firstname', dialogData.row.FirstName);
+        //     formik.setFieldValue('lastname', dialogData.row.LastName);
+        //     formik.setFieldValue('salary', dialogData.row.Salary);
+        //     formik.setFieldValue('address1', dialogData.row.Address1);
+        //     formik.setFieldValue('address2', dialogData.row.Address2);
 
-            setTimeout(() => {
-                formik.setFieldTouched('firstname', true);
-                formik.setFieldTouched('lastname', true);
-                formik.setFieldTouched('salary', true);
-                formik.setFieldTouched('address1', true);
-                formik.setFieldTouched('address2', true);
-            }, 10);
+        //     setTimeout(() => {
+        //         formik.setFieldTouched('firstname', true);
+        //         formik.setFieldTouched('lastname', true);
+        //         formik.setFieldTouched('salary', true);
+        //         formik.setFieldTouched('address1', true);
+        //         formik.setFieldTouched('address2', true);
+        //     }, 10);
 
 
-            // formik.values.firstname =  dialogData.row.FirstName;
-            // formik.values.lastname =  dialogData.row.LastName;
-            // formik.values.salary =  dialogData.row.Salary;
-            // formik.values.address1 =  dialogData.row.Address1;
-            // formik.values.address2 =  dialogData.row.Address2;
+        // formik.values.firstname =  dialogData.row.FirstName;
+        // formik.values.lastname =  dialogData.row.LastName;
+        // formik.values.salary =  dialogData.row.Salary;
+        // formik.values.address1 =  dialogData.row.Address1;
+        // formik.values.address2 =  dialogData.row.Address2;
 
-            // formik.touched.firstname = true;
-            // formik.touched.lastname = true;
-            // formik.touched.salary = true;
-            // formik.touched.address1 = true;
-            // formik.touched.address2 = true;
+        // formik.touched.firstname = true;
+        // formik.touched.lastname = true;
+        // formik.touched.salary = true;
+        // formik.touched.address1 = true;
+        // formik.touched.address2 = true;
 
-            //formik.validateForm();
-        }
+        //formik.validateForm();
+        //}
+
     }
 
     const handleBlur = (e) => {
@@ -195,6 +207,6 @@ EmployeeForm.propTypes = {
     Address2: PropTypes.string,
     // CreatedDate: PropTypes.Date,
     // ModifiedDate: PropTypes.Date,
-  }
+}
 
 export default EmployeeForm;
