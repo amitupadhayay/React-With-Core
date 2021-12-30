@@ -1,6 +1,4 @@
-import React, { useState, useEffect, setState, state } from 'react';
-import axios from 'axios';
-import EmployeeForm from './EmployeeForm';
+import React, { useState, useEffect} from 'react';
 import EmployeeService from '../../Services/EmployeeService';
 import DataTable from 'react-data-table-component';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
@@ -39,9 +37,9 @@ function EmployeeReactive(props) {
             })
     }
 
-    const addEmployee = (e) => {
-        setState({ modal: true });
-    }
+    // const addEmployee = (e) => {
+    //     setState({ modal: true });
+    // }
 
 
     return (

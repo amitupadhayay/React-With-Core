@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
 import './Navbar.css'
 import '../../App.css'
-import { IconContext } from 'react-icons';
-import { Router, Switch, Route, withRouter, useLocation } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Button from '@material-ui/core/Button';
+import { useLocation } from 'react-router-dom';
+// import AppBar from '@material-ui/core/AppBar';
+// import Toolbar from '@material-ui/core/Toolbar';
+// import Menu from "@material-ui/core/Menu";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import Button from '@material-ui/core/Button';
 
-import EmployeeList from '../Employee/EmployeeList';
-import EmployeeServer from '../Employee/EmployeeServer';
-import EmployeeReactive from '../Employee/EmployeeReactive';
-import Login from './Login';
+// import EmployeeList from '../Employee/EmployeeList';
+// import EmployeeServer from '../Employee/EmployeeServer';
+// import EmployeeReactive from '../Employee/EmployeeReactive';
+// import Login from './Login';
 import { createBrowserHistory } from 'history';
 import CoreService from './CoreService';
 import RouteService from '../../Services/RouteService';
@@ -37,7 +35,7 @@ function Sidenav(props) {
         getAappMenuList();
         checkAuthenticated();
         console.log('handle route change here', location);
-        getPageName(location.pathname);
+        //getPageName(location.pathname);
     }, []);
 
     const checkAuthenticated = () => {
@@ -59,14 +57,14 @@ function Sidenav(props) {
     }
 
     function setNavActive(url) {
-        url = url.replace('/', '');
-        let str = window.location.pathname.split('/');
-        if (str[1] == url) {
-            return 'nav-text nav-active';
-        }
-        else {
-            return 'nav-text';
-        }
+        // url = url.replace('/', '');
+        // let str = window.location.pathname.split('/');
+        // if (str[1] == url) {
+        //     return 'nav-text nav-active';
+        // }
+        // else {
+        //     return 'nav-text';
+        //}
     }
 
     const getPageName = (name) => {
@@ -100,7 +98,7 @@ function Sidenav(props) {
 
     const RedirectToPage = (url) => {
         debugger;
-        RouteService.navigate(props, url);
+        RouteService.navigateByHistory(props, url);
     }
 
     return (

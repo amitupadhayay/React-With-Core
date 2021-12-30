@@ -35,7 +35,7 @@ class APIConfiguration {
 
 
 
-  constructor() { }
+  //constructor() { }
 
 
   // getAll() {
@@ -66,9 +66,8 @@ class APIConfiguration {
   //   return http.get(`/tutorials?title=${title}`);
   // }
 
-  get(methodName, ctrl) {
-    //return this.http.get<any>(mainURL + methodName, headers);
-    return axios.get(this.mainURL + ctrl + methodName, this.headers);
+  get = async (methodName, ctrl) => {
+    return await axios.get(this.mainURL + ctrl + methodName, this.headers);
   }
 
   post(methodName, ctrl, params) {

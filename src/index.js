@@ -5,11 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+import store from './redux/store'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-    <ToastContainer closeButton={true} position="top-right" />
+    <Provider store={store}>
+      <App />
+      <ToastContainer closeButton={true} position="top-right" />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

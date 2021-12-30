@@ -1,16 +1,15 @@
-import React, { useState, useEffect, setState, state, Component } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import EmployeeForm from './EmployeeForm';
 import EmployeeService from '../../Services/EmployeeService';
 //import ReactTable from "react-table";  
 //import "react-table/react-table.css";  
 
 //import DataTable from 'react-data-table-component';
-import DataTable, { createTheme } from 'react-data-table-component';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import DataTable, { memoize } from 'react-data-table-component';
+//import LinearProgress from '@material-ui/core/LinearProgress';
+//import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
-import Button from "@material-ui/core/Button";
+//import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
 import * as FaIcons from 'react-icons/fa';
@@ -18,21 +17,36 @@ import * as AiIcons from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
 import RouteService from '../../Services/RouteService';
+import { createBrowserHistory } from 'history';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchEmployees } from '../../redux/actions/employeeActions';
+import { fetchAllEmployee, getLoading, getAllEmployee } from '../../redux/slice/employeeSlice';
+import Button from '@material-ui/core/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 function EmployeeList(props) {
 
-    const [employeeList, setEmployeeList] = useState([]);
     const [columns, setColumns] = useState([]);
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
     const [confimDialog, setConfimDialog] = useState(false);
     const [dialogData, setDialogData] = useState({});
 
+    //const employeeList = useSelector((state) => state.allEmployee.employees);
+    const employeeList = useSelector(getAllEmployee);
+    const loading = useSelector(getLoading);
+
+    //const history = createBrowserHistory();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     useEffect(() => {
-        getEmployeeList();
         getColumns();
-    }, []);
+        //dispatch(fetchEmployees());
+        dispatch(fetchAllEmployee());
+        console.log(employeeList);
+    }, [dispatch]);
 
     const getColumns = () => {
         let cols = EmployeeService.getColumns();
@@ -50,16 +64,24 @@ function EmployeeList(props) {
         setColumns(cols);
     }
 
-    const getEmployeeList = () => {
-        EmployeeService.getEmployeeList()
-            .then(response => {
-                setEmployeeList(response.data);
-                setLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setLoading(false);
-            })
+    const getEmployeeList = async () => {
+        // EmployeeService.getEmployeeList()
+        //     .then(response => {
+        //         setEmployeeList(response.data);
+        //         setLoading(false);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //         setLoading(false);
+        //     })
+
+        // const resp = await EmployeeService.getEmployeeList()
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+
+        //dispatch(fetchEmployees());
+        //setLoading(false);
     }
 
     const handleEdit = (row) => {
@@ -71,6 +93,17 @@ function EmployeeList(props) {
         attachConfirmDialogData(row);
         setConfimDialog(true);
     }
+
+    const handleRowSelection = (state) => {
+        console.log('Selected Rows: ', state.selectedRows);
+    }
+
+    const handleRowClicked = row => {
+        debugger;
+        console.log('Rows: ', row);
+        navigate(`/employee/${row.Id}`);
+    };
+
 
     const confirmDailogClose = (row, resp) => {
         if (resp) {
@@ -119,12 +152,12 @@ function EmployeeList(props) {
             title: 'confirm',
             message: 'Are you sure?'
         });
-        setConfimDialog(true); 
+        setConfimDialog(true);
     }
 
-    const goToEmployeeServer = ()=>{
+    const goToEmployeeServer = () => {
         //props.history.push('/employeeserver');
-        RouteService.navigate(props,'/employeeserver');
+        navigate('/employeeserver');
     }
 
     return (
@@ -144,11 +177,14 @@ function EmployeeList(props) {
                     progressPending={loading ? true : false}
                     progressComponent={<CommonLoaderIcon />}
                     persistTableHead
+                    selectableRows // add for checkbox selection
+                    onSelectedRowsChange={handleRowSelection}
+                    onRowClicked={handleRowClicked}
                 />
             </div>
 
             <div>
-            <span onClick={() => goToEmployeeServer()}><FaIcons.FaUserPlus></FaIcons.FaUserPlus> Employee Server</span>
+                <span onClick={() => goToEmployeeServer()}><FaIcons.FaUserPlus></FaIcons.FaUserPlus> Employee Server</span>
             </div>
 
             <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>

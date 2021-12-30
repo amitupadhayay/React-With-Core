@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Fragment } from 'react';
+//import { Fragment } from 'react';
 
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
 import Grid from '@material-ui/core/Grid';
 
 import { useFormik } from "formik";
@@ -14,7 +14,6 @@ import TextField from "@material-ui/core/TextField";
 
 import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
-import Notify, { AlertTypes } from '../../Services/Notify';
 import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 
@@ -25,8 +24,8 @@ import PropTypes from "prop-types";
 
 function EmployeeForm(props) {
 
-    const [open, setOpen] = useState(false);
-    const [dialogData, setDialogData] = useState(props.data);
+    //const [open, setOpen] = useState(false);
+    const [dialogData] = useState(props.data);
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
 
     useEffect(() => {
@@ -34,13 +33,13 @@ function EmployeeForm(props) {
     }, [])
 
     const setInitialValue = () => {
-        if (dialogData.employeeId != 0) {
+        if (dialogData?.employeeId !== 0) {
             return {
-                firstname: dialogData.row.FirstName,
-                lastname: dialogData.row.LastName,
-                salary: dialogData.row.Salary,
-                address1: dialogData.row.Address1,
-                address2: dialogData.row.Address2,
+                firstname: dialogData?.row?.FirstName,
+                lastname: dialogData?.row?.LastName,
+                salary: dialogData?.row?.Salary,
+                address1: dialogData?.row?.Address1,
+                address2: dialogData?.row?.Address2,
             }
         }
         else {
@@ -66,7 +65,7 @@ function EmployeeForm(props) {
         initialValues: setInitialValue(),
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            let asd = formik.errors;
+            //let asd = formik.errors;
         },
         onChange: () => {
             //console.log('test');
@@ -114,7 +113,7 @@ function EmployeeForm(props) {
     const addEmplyee = () => {
         if (formik.isValid) {
             let formData = {
-                EmployeeId: dialogData.row == null ? 0 : dialogData.row.EmployeeId,
+                EmployeeId: dialogData.row === null ? 0 : dialogData.row.EmployeeId,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
                 Salary: parseInt(formik.values.salary),
@@ -126,7 +125,7 @@ function EmployeeForm(props) {
 
             EmployeeService.saveEmployee(formData)
                 .then(response => {
-                    if (dialogData.employeeId == 0) {
+                    if (dialogData.employeeId === 0) {
                         toast.success('Employee added successfully');
                     }
                     else {

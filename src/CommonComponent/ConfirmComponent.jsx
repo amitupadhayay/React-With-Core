@@ -1,15 +1,15 @@
-import React, { useState, useEffect, setState, state, Component } from 'react';
+import React, { useState } from 'react';
 import Button from "@material-ui/core/Button";
 import * as FaIcons from 'react-icons/fa';
 import Grid from '@material-ui/core/Grid';
 
 function ConfirmComponent(props) {
 
-    const [dialogData, setDialogData] = useState(props.data);
+    const [dialogData] = useState(props.data);
 
-    const handleOk = () => {
-        props.confirmDailogClose(props.data, true);
-    }
+    // const handleOk = () => {
+    //     props.confirmDailogClose(props.data, true);
+    // }
 
     return (
         <div className='p-36'>

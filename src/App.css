@@ -259,5 +259,12 @@ margin-top: 8px;
   }
 
   .pointer{
-    cursor: pointer;
+    cursor: pointer !important;
+  }
+
+  .card{
+    box-shadow: 10px 10px 5px gray;
+    justify-content: center;
+    width: 50%;
+    height: 50%;
   }

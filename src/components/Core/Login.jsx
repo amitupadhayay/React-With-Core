@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,20 +7,28 @@ import TextField from "@material-ui/core/TextField";
 
 import CoreService from './CoreService';
 import * as FaIcons from 'react-icons/fa';
-import Notify, { AlertTypes } from '../../Services/Notify';
+//import Notify, { AlertTypes } from '../../Services/Notify';
 import { toast } from 'react-toastify';
 import Grid from '@material-ui/core/Grid';
 
 import RouteService from '../../Services/RouteService';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { createBrowserHistory } from 'history';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAuthentication } from '../../redux/slice/employeeSlice';
+
 
 function Login(props) {
 
     //const [dialogData, setDialogData] = useState(props.data);
-
+    const history = createBrowserHistory();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        localStorage.clear();
     }, [])
 
     const setInitialValue = () => {
@@ -57,7 +65,9 @@ function Login(props) {
                     if (response.data.Token != null) {
                         localStorage.setItem('token', response.data.Token);
                         toast.success('Login done successfully');
-                        RouteService.navigate('/employee');
+                        //RouteService.navigateByHistory(history,'/employee');
+                        dispatch(setAuthentication(true));
+                        navigate('/employee');
                     }
                     else {
                         toast.error('Username or Password is incorrect');

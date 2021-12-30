@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
 import './Navbar.css';
 import '../../App.css'
 import { IconContext } from 'react-icons';
-import { Router, Switch, Route, withRouter, useLocation } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { Routes, Link, Route } from 'react-router-dom'
+//import AppBar from '@material-ui/core/AppBar';
+//import Toolbar from '@material-ui/core/Toolbar';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 
 import EmployeeList from '../Employee/EmployeeList';
 import EmployeeServer from '../Employee/EmployeeServer';
@@ -19,31 +18,35 @@ import Login from './Login';
 import { createBrowserHistory } from 'history';
 import CoreService from './CoreService';
 import RouteService from '../../Services/RouteService';
+import EmployeeDetails from '../Employee/EmployeeDetails';
+import { useNavigate } from 'react-router-dom';
+import { getAuthentication, setAuthentication } from '../../redux/slice/employeeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function Navbar(props) {
 
-    //const location = useLocation();
     const [sidebar, setSidebar] = useState(true);
     const [appList, setAppList] = useState([]);
     const [pageName, setPageName] = useState("");
-    const [authenticated, setAuthenticated] = useState(false);
+    //const [authenticated, setAuthenticated] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentUrl, setCurrentUrl] = useState('');
 
     const history = createBrowserHistory();
-    const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    let authenticated = useSelector(getAuthentication);
 
     useEffect(() => {
         getAappMenuList();
         checkAuthenticated();
-        //console.log('handle route change here', location);
-        getPageName(history.location.pathname);
-    }, [location]);
+        //getPageName(history.location.pathname);
+        //setCurrentUrl(history.location.pathname);
+    }, []);
 
     const checkAuthenticated = () => {
-        let token = localStorage.getItem('token');
-        setAuthenticated(CoreService.checkToken());
+        authenticated = CoreService.checkToken();
     }
 
     const getAappMenuList = () => {
@@ -56,34 +59,34 @@ function Navbar(props) {
     }
 
     const showSidebar = () => {
-        setSidebar(!sidebar);
+        setSidebar(sidebar ? false : true);
     }
 
-    function setNavActive(url) {
-        url = url.replace('/', '');
-        let str = history.location.pathname.split('/');
-        if (str[1] == url) {
-            return 'nav-text nav-active';
-        }
-        else {
-            return 'nav-text';
-        }
-    }
+    // function setNavActive(url) {
+    //     url = url.replace('/', '');
+    //     let str = history.location.pathname.split('/');
+    //     if (str[1] == url) {
+    //         return 'nav-text nav-active';
+    //     }
+    //     else {
+    //         return 'nav-text';
+    //     }
+    // }
 
-    const getPageName = (name) => {       
-        if (name == "/" || name == "/employee") {
+    const getPageName = (name) => {
+        if (name === "/" || name === "/employee") {
             name = "Employee"
         }
-        else if (name == "/employeeserver") {
+        else if (name === "/employeeserver") {
             name = "Employee Server"
         }
-        else if (name == "/employeereactive") {
+        else if (name === "/employeereactive") {
             name = "Employee Reactive"
         }
         else {
             name = name.replace('/', '');
         }
-        //setPageName(name);       
+        setPageName(name);
     }
 
     const handleProfileClick = (event) => {
@@ -96,7 +99,9 @@ function Navbar(props) {
 
     const handleLogout = () => {
         localStorage.clear();
-        RouteService.navigate('login');
+        dispatch(setAuthentication(false));
+        //RouteService.navigateByHistory(history, '/login');
+        navigate('/login');
     };
 
     history.listen((location, action) => {
@@ -105,10 +110,12 @@ function Navbar(props) {
         //getPageName(location.pathname);        
     })
 
-    const RedirectToPage = (url) => {   
+    const RedirectToPage = (url) => {
         //url= url.replace('/','');
         //setCurrentUrl(url);     
-        RouteService.navigateByHistory(history, url);
+        //RouteService.navigateByHistory(history, url);
+        navigate(url);
+
         //getPageName(url);      
     }
 
@@ -152,8 +159,8 @@ function Navbar(props) {
                             </li>
 
                             {appList.map((item, index) => (
-                                <li key={index} className={currentUrl==item.url ? 'nav-text nav-active' : 'nav-text'}
-                                onClick={() => RedirectToPage(item.url)}>
+                                <li key={index} className={currentUrl === item.url ? 'nav-text nav-active' : 'nav-text'}
+                                    onClick={() => RedirectToPage(item.url)}>
                                     {/* <Link to={item.url}>
                                         {item.icon}
                                         <span>{item.AppName}</span>
@@ -167,28 +174,26 @@ function Navbar(props) {
                     </nav>
 
                     <main className={sidebar ? 'main-page ml-200' : 'main-page'}>
-                        <Router history={history}>
-                            <Switch>
-                                <Route exact path='/' component={EmployeeList}></Route>
-                                <Route exact path='/employee' component={EmployeeList}></Route>
-                                <Route exact path='/employeeserver' component={EmployeeServer}></Route>
-                                <Route exact path='/employeereactive' component={EmployeeReactive}></Route>
-                            </Switch>
-                        </Router>
+                        <Routes>
+                            {/* <Route exact path='/' element={<EmployeeList />}></Route> */}
+                            <Route path='/employee' element={<EmployeeList />}></Route>
+                            <Route path='/employeeserver' element={<EmployeeServer />}></Route>
+                            <Route path='/employeereactive' element={<EmployeeReactive />}></Route>
+                            <Route path='/employee/:employeeId' element={<EmployeeDetails />}></Route>
+                        </Routes>
+
                     </main>
 
                 </IconContext.Provider>
-
                 :
-                <Router history={history}>
-                    <Switch>
-                        <Route exact path='/' component={Login}></Route>
-                        <Route exact path='/login' component={Login}></Route>
-                    </Switch>
-                </Router>
+                <Routes>
+                    <Route exact path='/' element={<Login />}></Route>
+                    <Route path='/login' element={<Login />}></Route>
+                </Routes>
             }
         </div>
     )
 }
 
 export default Navbar;
+
