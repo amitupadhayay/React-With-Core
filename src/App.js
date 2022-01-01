@@ -11,7 +11,7 @@ function App() {
   const history = createBrowserHistory();
 
   return (
-    <Router>
+    <Router history={history}>
       <Navbar></Navbar>
     </Router>
 

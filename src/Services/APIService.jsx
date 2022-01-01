@@ -1,29 +1,4 @@
 import axios from "axios";
-//import http from "../http-common";
-
-// function APIService() {
-
-//   const headers = {
-//     "Content-type": "application/json",
-//     'Accept': 'application/json',
-//   }
-//   const URL = `https://localhost:44319/api/`;
-
-//   export const getList = (methodName, payload) => {
-//     return axios(URL + "Employee/" + methodName, {
-//       method: 'POST/GET',
-//       headers: headers,
-//       data: payload,
-//     })
-//       .then(response => response.data)
-//       .catch(error => {
-//         throw error;
-//       });
-//   };
-
-// }
-// export default APIService;
-
 
 class APIConfiguration {
 
@@ -33,10 +8,25 @@ class APIConfiguration {
   }
   mainURL = `https://localhost:44319/api/`;
 
+  get = async (methodName, ctrl) => {
+    return await axios.get(this.mainURL + ctrl + methodName, this.headers);
+  }
 
+  getData(methodName, ctrl) {
+    return axios.get(this.mainURL + ctrl + methodName, this.headers);
+  }
 
-  //constructor() { }
+  // post(methodName, ctrl, params) {
+  //   return axios.post(this.mainURL + ctrl + methodName, params, this.headers);
+  // }
 
+  post = async (methodName, ctrl, params) => {
+    return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
+  }
+
+  delete(methodName, ctrl) {
+    return axios.delete(this.mainURL + ctrl + methodName);
+  }
 
   // getAll() {
   //   return http.get("/tutorials");
@@ -65,18 +55,6 @@ class APIConfiguration {
   // findByTitle(title) {
   //   return http.get(`/tutorials?title=${title}`);
   // }
-
-  get = async (methodName, ctrl) => {
-    return await axios.get(this.mainURL + ctrl + methodName, this.headers);
-  }
-
-  post(methodName, ctrl, params) {
-    return axios.post(this.mainURL + ctrl + methodName, params, this.headers);
-  }
-
-  delete(methodName, ctrl) {
-    return axios.delete(this.mainURL + ctrl + methodName);
-  }
 
 
 }

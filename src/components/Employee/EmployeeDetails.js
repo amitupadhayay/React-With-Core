@@ -17,12 +17,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import RouteService from '../../Services/RouteService';
 import { fetchSelectedEmployee, getSelectedEmployee, getLoading } from '../../redux/slice/employeeSlice';
+import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 
 function EmployeeDetails(props) {
 
     //const employee = useSelector((state) => state.currentEmployee);
     const dispatch = useDispatch();
-    let { employeeId } = useParams();
+    const { employeeId } = useParams();
     const navigate = useNavigate();
     const employee = useSelector(getSelectedEmployee);
     const loading = useSelector(getLoading);
@@ -51,22 +52,19 @@ function EmployeeDetails(props) {
             <div className='sub-header'>
                 <span onClick={() => goBack()}><FaIcons.FaBackward></FaIcons.FaBackward> Back </span>
             </div>
-            {/* <div>
-                <Button variant="contained" color="primary" onClick={() => goBack()}>
-                    Back
-                </Button>
-            </div> */}
             <div className="card">
-                <Card>
-                    <CardContent>
-                        <img src='https://image.freepik.com/free-photo/river-foggy-mountains-landscape_1204-511.jpg'></img>
-                        <h2>{employee?.FirstName} {employee?.LastName}</h2>
-                        <h4>{employee?.Salary}</h4>
-                        <h4>{employee?.Address1} {employee?.Address2}</h4>
-                        <h4>{employee?.CreatedDate}</h4>
-                        <h4>{employee?.ModifiedDate}</h4>
-                    </CardContent>
-                </Card>
+                {loading ? (<CommonLoaderIcon />) : (
+                    <Card>
+                        <CardContent>
+                            <img src='https://image.freepik.com/free-photo/river-foggy-mountains-landscape_1204-511.jpg'></img>
+                            <h2>{employee?.FirstName} {employee?.LastName}</h2>
+                            <h4>{employee?.Salary}</h4>
+                            <h4>{employee?.Address1} {employee?.Address2}</h4>
+                            <h4>{employee?.CreatedDate}</h4>
+                            <h4>{employee?.ModifiedDate}</h4>
+                        </CardContent>
+                    </Card>
+                )}
             </div>
         </div>
     )

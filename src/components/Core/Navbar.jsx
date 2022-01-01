@@ -29,7 +29,6 @@ function Navbar(props) {
     const [sidebar, setSidebar] = useState(true);
     const [appList, setAppList] = useState([]);
     const [pageName, setPageName] = useState("");
-    //const [authenticated, setAuthenticated] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentUrl, setCurrentUrl] = useState('');
 
@@ -41,12 +40,17 @@ function Navbar(props) {
     useEffect(() => {
         getAappMenuList();
         checkAuthenticated();
-        //getPageName(history.location.pathname);
-        //setCurrentUrl(history.location.pathname);
     }, []);
+
+    useEffect(() => {
+        getPageName(history.location.pathname);
+    }, [history]);
 
     const checkAuthenticated = () => {
         authenticated = CoreService.checkToken();
+        if (authenticated) {
+            dispatch(setAuthentication(true));
+        }
     }
 
     const getAappMenuList = () => {
@@ -62,31 +66,24 @@ function Navbar(props) {
         setSidebar(sidebar ? false : true);
     }
 
-    // function setNavActive(url) {
-    //     url = url.replace('/', '');
-    //     let str = history.location.pathname.split('/');
-    //     if (str[1] == url) {
-    //         return 'nav-text nav-active';
-    //     }
-    //     else {
-    //         return 'nav-text';
-    //     }
-    // }
-
-    const getPageName = (name) => {
-        if (name === "/" || name === "/employee") {
-            name = "Employee"
-        }
-        else if (name === "/employeeserver") {
-            name = "Employee Server"
-        }
-        else if (name === "/employeereactive") {
-            name = "Employee Reactive"
-        }
-        else {
-            name = name.replace('/', '');
-        }
-        setPageName(name);
+    const getPageName = (navUrl) => {
+        // if (name === "/" || name === "/employee") {
+        //     name = "Employee"
+        // }
+        // else if (name === "/employeeserver") {
+        //     name = "Employee Server"
+        // }
+        // else if (name === "/employeereactive") {
+        //     name = "Employee Reactive"
+        // }
+        // else {
+        //     name = name.replace('/', '');
+        // }
+        let split = navUrl.split('/');
+        let text = split.length > 0 ? '/' + split[1] : '';
+        setCurrentUrl(text);
+        let result = appList.find(x => x.url == text);
+        setPageName(result != undefined ? result.AppName : '');;
     }
 
     const handleProfileClick = (event) => {
@@ -104,19 +101,14 @@ function Navbar(props) {
         navigate('/login');
     };
 
-    history.listen((location, action) => {
-        //console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
-        //console.log(`The last navigation action was ${action}`);
-        //getPageName(location.pathname);        
-    })
+    //history.listen((location, action) => {
+    //console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`);
+    //console.log(`The last navigation action was ${action}`);
+    //getPageName(location.pathname);        
+    //})
 
     const RedirectToPage = (url) => {
-        //url= url.replace('/','');
-        //setCurrentUrl(url);     
-        //RouteService.navigateByHistory(history, url);
         navigate(url);
-
-        //getPageName(url);      
     }
 
     return (
@@ -161,10 +153,6 @@ function Navbar(props) {
                             {appList.map((item, index) => (
                                 <li key={index} className={currentUrl === item.url ? 'nav-text nav-active' : 'nav-text'}
                                     onClick={() => RedirectToPage(item.url)}>
-                                    {/* <Link to={item.url}>
-                                        {item.icon}
-                                        <span>{item.AppName}</span>
-                                    </Link> */}
                                     {item.icon}
                                     <span className='white-color pointer'> {item.AppName} </span>
                                 </li>
@@ -175,7 +163,7 @@ function Navbar(props) {
 
                     <main className={sidebar ? 'main-page ml-200' : 'main-page'}>
                         <Routes>
-                            {/* <Route exact path='/' element={<EmployeeList />}></Route> */}
+                            <Route exact path='/' element={<EmployeeList />}></Route>
                             <Route path='/employee' element={<EmployeeList />}></Route>
                             <Route path='/employeeserver' element={<EmployeeServer />}></Route>
                             <Route path='/employeereactive' element={<EmployeeReactive />}></Route>

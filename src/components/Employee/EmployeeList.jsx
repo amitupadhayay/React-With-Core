@@ -10,19 +10,19 @@ import DataTable, { memoize } from 'react-data-table-component';
 //import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 //import Button from "@material-ui/core/Button";
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
+//import Dialog from '@material-ui/core/Dialog';
+//import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
 import RouteService from '../../Services/RouteService';
-import { createBrowserHistory } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployees } from '../../redux/actions/employeeActions';
-import { fetchAllEmployee, getLoading, getAllEmployee } from '../../redux/slice/employeeSlice';
+import { fetchAllEmployee, getLoading, getAllEmployee, getCommonError } from '../../redux/slice/employeeSlice';
 import Button from '@material-ui/core/Button';
 import { useNavigate } from 'react-router-dom';
+import DialogComponent from '../../CommonComponent/DialogComponent';
 
 
 function EmployeeList(props) {
@@ -37,7 +37,6 @@ function EmployeeList(props) {
     const employeeList = useSelector(getAllEmployee);
     const loading = useSelector(getLoading);
 
-    //const history = createBrowserHistory();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -45,7 +44,6 @@ function EmployeeList(props) {
         getColumns();
         //dispatch(fetchEmployees());
         dispatch(fetchAllEmployee());
-        console.log(employeeList);
     }, [dispatch]);
 
     const getColumns = () => {
@@ -99,8 +97,6 @@ function EmployeeList(props) {
     }
 
     const handleRowClicked = row => {
-        debugger;
-        console.log('Rows: ', row);
         navigate(`/employee/${row.Id}`);
     };
 
@@ -127,8 +123,8 @@ function EmployeeList(props) {
     }
 
     const handleDialogClose = (resp) => {
-        setOpenDialog(false);
-        setConfimDialog(false);
+        setOpenDialog(resp);
+        setConfimDialog(resp);
         if (resp) {
             getEmployeeList();
         }
@@ -142,6 +138,7 @@ function EmployeeList(props) {
             employeeId: row?.EmployeeId == null ? 0 : row?.EmployeeId,
             row: row,
             title: "Add Employee",
+            component: <EmployeeForm data={row} handleDialogClose={handleDialogClose}></EmployeeForm>
         });
         setOpenDialog(true);
     }
@@ -156,7 +153,6 @@ function EmployeeList(props) {
     }
 
     const goToEmployeeServer = () => {
-        //props.history.push('/employeeserver');
         navigate('/employeeserver');
     }
 
@@ -187,15 +183,20 @@ function EmployeeList(props) {
                 <span onClick={() => goToEmployeeServer()}><FaIcons.FaUserPlus></FaIcons.FaUserPlus> Employee Server</span>
             </div>
 
-            <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>
+            {/* <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>
                 <DialogTitleComponent data={dialogData} handleDialogClose={handleDialogClose}></DialogTitleComponent>
                 <EmployeeForm data={dialogData} handleDialogClose={handleDialogClose}></EmployeeForm>
-            </Dialog>
+            </Dialog> */}
 
-            <Dialog open={confimDialog} aria-labelledby="form-dialog-title" className='p-8'>
+            {openDialog ? (
+                <DialogComponent data={dialogData} handleDialogClose={handleDialogClose}>
+                </DialogComponent>
+            ) : null}
+
+            {/* <Dialog open={confimDialog} aria-labelledby="form-dialog-title" className='p-8'>
                 <DialogTitleComponent data={dialogData} handleDialogClose={handleDialogClose}></DialogTitleComponent>
                 <ConfirmComponent data={dialogData} confirmDailogClose={confirmDailogClose}></ConfirmComponent>
-            </Dialog>
+            </Dialog> */}
 
         </div >
     );

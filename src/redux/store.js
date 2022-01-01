@@ -20,7 +20,7 @@ const store = configureStore({
     reducer: {
         employeeSlice: employeeSlice,
     },
-    middleware: [saga],
+    middleware: [saga,thunk],
 });
 
 saga.run(rootSaga);

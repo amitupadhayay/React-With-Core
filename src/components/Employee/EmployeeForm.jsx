@@ -16,6 +16,9 @@ import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from 'react-redux';
+import { saveEmployee } from '../../redux/slice/employeeSlice';
+import { getApiCalled, setApiCalled, getAllEmployee, fetchAllEmployee } from '../../redux/slice/employeeSlice';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -24,22 +27,38 @@ import PropTypes from "prop-types";
 
 function EmployeeForm(props) {
 
-    //const [open, setOpen] = useState(false);
-    const [dialogData] = useState(props.data);
+    const [row] = useState(props.data);
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
+    const dispatch = useDispatch();
+    const apiCalled = useSelector(getApiCalled);
 
     useEffect(() => {
         setFormValue();
     }, [])
 
+    useEffect(() => {
+        if (apiCalled) {
+            if (row?.EmployeeId === "") {
+                toast.success('Employee added successfully');
+            }
+            else {
+                toast.success('Employee updated successfully');
+            }
+            props.handleDialogClose(false);
+        }
+        dispatch(fetchAllEmployee());
+        dispatch(setApiCalled());
+
+    }, [apiCalled]);
+
     const setInitialValue = () => {
-        if (dialogData?.employeeId !== 0) {
+        if (row?.EmployeeId !== "") {
             return {
-                firstname: dialogData?.row?.FirstName,
-                lastname: dialogData?.row?.LastName,
-                salary: dialogData?.row?.Salary,
-                address1: dialogData?.row?.Address1,
-                address2: dialogData?.row?.Address2,
+                firstname: row?.FirstName,
+                lastname: row?.LastName,
+                salary: row?.Salary,
+                address1: row?.Address1,
+                address2: row?.Address2,
             }
         }
         else {
@@ -110,10 +129,10 @@ function EmployeeForm(props) {
         formik.setFieldTouched(e.target.name, true);
     }
 
-    const addEmplyee = () => {
+    const saveEmplyee = () => {
         if (formik.isValid) {
             let formData = {
-                EmployeeId: dialogData.row === null ? 0 : dialogData.row.EmployeeId,
+                EmployeeId: row === null ? 0 : row?.EmployeeId,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
                 Salary: parseInt(formik.values.salary),
@@ -123,20 +142,22 @@ function EmployeeForm(props) {
                 ModifiedDate: new Date(),
             };
 
-            EmployeeService.saveEmployee(formData)
-                .then(response => {
-                    if (dialogData.employeeId === 0) {
-                        toast.success('Employee added successfully');
-                    }
-                    else {
-                        toast.success('Employee updated successfully');
-                    }
+            // EmployeeService.saveEmployee(formData)
+            //     .then(response => {
+            //         if (row?.EmployeeId === "") {
+            //             toast.success('Employee added successfully');
+            //         }
+            //         else {
+            //             toast.success('Employee updated successfully');
+            //         }
 
-                    props.handleDialogClose(true);
-                })
-                .catch(function (error) {
-                    toast.error(error);
-                })
+            //         props.handleDialogClose(false);
+            //     })
+            //     .catch(function (error) {
+            //         toast.error(error);
+            //     });
+
+            dispatch(saveEmployee(formData));
         }
     }
 
@@ -181,7 +202,7 @@ function EmployeeForm(props) {
 
                     <Grid item xs={7}></Grid>
                     <Grid item xs={5}>
-                        <Button disabled={!formik.isValid} variant="contained" type="submit" onClick={addEmplyee}>
+                        <Button disabled={!formik.isValid} variant="contained" type="submit" onClick={saveEmplyee}>
                             <FaIcons.FaSave></FaIcons.FaSave>Save Employee
                         </Button>
                     </Grid>

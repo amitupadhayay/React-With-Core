@@ -4,10 +4,10 @@ export default axios.create({
   baseURL: `https://localhost:44319/api/`,
   //baseURL: 'https://fakestoreapi.com/',
 
-  // headers: {
-  //   "Content-type": "application/json",
-  //   'Accept': 'application/json',
-  // }
+  headers: {
+    "Content-type": "application/json",
+    'Accept': 'application/json',
+  }
 
   //   timeout: 1000,
   //   headers: {
