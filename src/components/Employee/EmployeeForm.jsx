@@ -9,17 +9,22 @@ import Grid from '@material-ui/core/Grid';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-//import Button from "@material-ui/core/Button";
-//import TextField from "@material-ui/core/TextField";
-import { TextField, Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+//import { TextField, Button, } from "@material-ui/core";
+import { saveIcon } from "@material-ui/core/Icon";
 
 import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
-import { saveEmployee } from '../../redux/slice/employeeSlice';
+import { getLoading, saveEmployee } from '../../redux/slice/employeeSlice';
 import { getApiTransaction, setApiTransaction, getAllEmployee, fetchAllEmployee, saveEmployeeThunk } from '../../redux/slice/employeeSlice';
+
+import { GlobalVariable } from '../../Constants/global-constant';
+import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
+import { timeout } from 'rxjs-compat/operator/timeout';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -32,6 +37,7 @@ function EmployeeForm(props) {
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
     const dispatch = useDispatch();
     const apiTransaction = useSelector(getApiTransaction);
+    const loading = useSelector(getLoading);
 
     useEffect(() => {
         setFormValue();
@@ -71,7 +77,9 @@ function EmployeeForm(props) {
     const validationSchema = yup.object({
         firstname: yup.string().required("First Name is required"),
         lastname: yup.string().required("Last Name is required"),
-        salary: yup.string().required("Salary is required"),
+        //salary: yup.number().integer().required("Salary is required"),
+        salary: yup.string().required('Salary is required')
+            .matches(GlobalVariable.DecimalOnly, "errr"),
         address1: yup.string().required("Address1 is required"),
         address2: yup.string().required("Address2 is required"),
     });
@@ -79,11 +87,15 @@ function EmployeeForm(props) {
     const formik = useFormik({
         initialValues: setInitialValue(),
         validationSchema: validationSchema,
+        validateOnMount: true,
         onSubmit: (values) => {
-            //let asd = formik.errors;
+            console.log('onSubmit');
         },
         onChange: () => {
-            //console.log('test');
+            console.log('onChange');
+        },
+        handleChange: () => {
+            console.log('handleChange');
         }
     });
 
@@ -126,6 +138,7 @@ function EmployeeForm(props) {
     }
 
     const saveEmplyee = () => {
+        formik.touched = true;
         if (formik.isValid) {
             let formData = {
                 EmployeeId: row === null ? 0 : row?.EmployeeId,
@@ -154,7 +167,6 @@ function EmployeeForm(props) {
             //     });
 
             dispatch(saveEmployee(formData));
-
             //dispatch(saveEmployeeThunk(formData));
         }
     }
@@ -203,8 +215,12 @@ function EmployeeForm(props) {
                     <Grid item xs={7}></Grid>
                     <Grid item xs={5}>
                         <Button disabled={!formik.isValid} variant="contained" type="submit" onClick={saveEmplyee}>
-                            <FaIcons.FaSave></FaIcons.FaSave>Save Employee
+                            {loading ? <CommonLoaderIcon size={20} text="Saving..." /> : <>
+                                <FaIcons.FaSave className='btn-icon'></FaIcons.FaSave>
+                                Save Employee </>
+                            }
                         </Button>
+
                     </Grid>
 
 

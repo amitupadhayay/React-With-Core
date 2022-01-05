@@ -136,7 +136,7 @@ function EmployeeList(props) {
             // height: '50vh',
             employeeId: row?.EmployeeId == null ? 0 : row?.EmployeeId,
             row: row,
-            title: "Add Employee",
+            title: row?.EmployeeId == null ? 'Add Employee' : "Edit Employee",
             component: <EmployeeForm data={row} handleDialogClose={handleDialogClose}></EmployeeForm>
         });
         setOpenDialog(true);
@@ -158,7 +158,7 @@ function EmployeeList(props) {
     return (
         <div>
 
-            <div className='sub-header'>
+            <div className='sub-header pl-16'>
                 <span onClick={() => attachDialogData(null)}><FaIcons.FaUserPlus></FaIcons.FaUserPlus>  Add Employee</span>
             </div>
 
@@ -170,7 +170,7 @@ function EmployeeList(props) {
                     pagination
                     highlightOnHover
                     progressPending={loading}
-                    progressComponent={<CommonLoaderIcon />}
+                    progressComponent={<CommonLoaderIcon size={40} text='Loading... Please Wait' />}
                     persistTableHead
                     selectableRows // add for checkbox selection
                     onSelectedRowsChange={handleRowSelection}

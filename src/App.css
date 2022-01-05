@@ -100,9 +100,9 @@
 }
 
 .MuiButton-contained {
-background-color: var(--mainColor) !important;
-color: #fff !important;
-}
+  background-color: var(--mainColor) !important;
+  color: #fff !important;
+ }
 
 .p-8{
 padding: 8px;
@@ -121,6 +121,9 @@ padding: 8px;
     }
  .pl-8{
     padding-left: 8px;
+ }
+ .pl-16{
+  padding-left: 16px;
  }
  .pb-8{
   padding-bottom: 8px;
@@ -169,16 +172,6 @@ margin-top: 8px;
     width: 5%;
   }
 
-  .dialog-title{
-    font-family: var(--mainFontFamily);
-    font-size: var(--mainFontSize);
-    background-color: var(--mainColor) !important;
-    text-align: left;
-    color: #fff;
-    margin: -16px !important;
-    text-transform: uppercase;
-  }
-
   .form{
     padding-top: 22px !important;
   }
@@ -207,28 +200,40 @@ margin-top: 8px;
     color: red !important;
   }
 
-  .MuiButton-root {
-    padding: 5px 5px 5px 0px;
-  }
-
-  .MuiButton-label{
-    margin-left: 0px !important;
-  }
-
   .MuiPaper-root {
-    padding: 16px !important;
+    padding: 20px !important;
+  }
+
+  .dialog-title{
+    font-family: var(--mainFontFamily);
+    font-size: var(--mainFontSize);
+    background-color: var(--mainColor) !important;
+    text-align: left;
+    color: #fff;
+    margin: -20px !important;
+    text-transform: uppercase;
+    margin-bottom: 10px !important;
+  }
+
+  .MuiDialogTitle-root{
+    padding: 10px !important;
   }
 
   .flex{
     display: flex;
+  } 
+
+  .dialog-close-btn{
+    font-size: 32px !important;
+    margin-top: -10px;
+    margin-right: -10px;
+    color: lightcoral;
   }
 
-  .MuiDialogTitle-root{
-    padding: 0px !important;
-  }
-
-  .font-size-30{
-    font-size: 30px;
+  .btn-icon{
+    /* padding-left: 10px; */
+    padding-right: 10px;
+    font-size:27px
   }
 
   svg{

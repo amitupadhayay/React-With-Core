@@ -4,11 +4,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 function CommonLoaderIcon(props) {
 
     return (
-        <div className='text-center m-16'>
+        // <div className='text-center m-16'>
         <React.Fragment>
-          <CircularProgress size={30} color='primary' />
+          <CircularProgress size={props.size} color='primary' />
+          <span className='pl-8'>{props.text}</span>
+
         </React.Fragment>
-        </div>
       )
 }
 export default CommonLoaderIcon;

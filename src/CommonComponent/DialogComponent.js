@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as AiIcons from 'react-icons/ai';
+import { ThreeDRotation, Cancel } from '@material-ui/icons';
 
 const DialogComponent = (props) => {
 
@@ -22,12 +23,14 @@ const DialogComponent = (props) => {
                         <div className="flex full-width title-pad">
                             <div className='width-95 text-left pl-8'>{dialogData.title === undefined ? 'Title' : dialogData.title}</div>
                             <div className='width-5 text-right '>
-                                <AiIcons.AiOutlineCloseCircle className='font-size-30' onClick={() => handleDialogClose(false)}></AiIcons.AiOutlineCloseCircle></div>
+                                {/* <AiIcons.AiOutlineCloseCircle className='dialog-close-btn' onClick={() => handleDialogClose(false)}></AiIcons.AiOutlineCloseCircle> */}
+                                <Cancel className='dialog-close-btn' onClick={() => handleDialogClose(false)}></Cancel>
+                            </div>
                         </div>
                     </DialogTitle>
                 </div>
                 {dialogData.component}
-            </Dialog>
+            </Dialog >
         </>
     )
 };

@@ -119,7 +119,7 @@ function Navbar(props) {
                         <div className='width-50'>
                             <Link to="#" className="menu-bars">
                                 <FaIcons.FaBars onClick={showSidebar}></FaIcons.FaBars>
-                                <span className='white-color'>REACT-DEMO</span>
+                                <span className='white-color pl-8'>REACT-DEMO</span>
                             </Link>
                         </div>
                         <div className='width-25'>
@@ -144,9 +144,8 @@ function Navbar(props) {
                         <ul className='nav-menu-items'>
                             <li className='navbar-toggle' onClick={showSidebar}>
                                 <Link to="#" className='menu-bars'>
-                                    {/* <AiIcons.AiOutlineClose></AiIcons.AiOutlineClose> */}
                                     <FaIcons.FaBars onClick={showSidebar}></FaIcons.FaBars>
-                                    <span className='white-color'>REACT-DEMO</span>
+                                    <span className='white-color pl-8'>REACT-DEMO</span>
                                 </Link>
                             </li>
 
@@ -154,7 +153,7 @@ function Navbar(props) {
                                 <li key={index} className={currentUrl === item.url ? 'nav-text nav-active' : 'nav-text'}
                                     onClick={() => RedirectToPage(item.url)}>
                                     {item.icon}
-                                    <span className='white-color pointer'> {item.AppName} </span>
+                                    <span className='white-color pl-8 pointer'> {item.AppName} </span>
                                 </li>
                             ))}
 

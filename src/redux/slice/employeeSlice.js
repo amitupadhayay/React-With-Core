@@ -41,7 +41,7 @@ export const employeeSlice = createSlice({
             state.apiTransaction = action.payload;
         },
         saveEmployee: (state, action) => {
-            state.loading = false;
+            state.loading = true;
             state.apiTransaction = false;
         },
         saveEmployeeSuceess: (state, action) => {
