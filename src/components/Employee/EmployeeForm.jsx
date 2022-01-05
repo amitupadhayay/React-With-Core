@@ -9,8 +9,9 @@ import Grid from '@material-ui/core/Grid';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+//import Button from "@material-ui/core/Button";
+//import TextField from "@material-ui/core/TextField";
+import { TextField, Button } from "@material-ui/core";
 
 import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
@@ -18,7 +19,7 @@ import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
 import { saveEmployee } from '../../redux/slice/employeeSlice';
-import { getApiCalled, setApiCalled, getAllEmployee, fetchAllEmployee } from '../../redux/slice/employeeSlice';
+import { getApiTransaction, setApiTransaction, getAllEmployee, fetchAllEmployee, saveEmployeeThunk } from '../../redux/slice/employeeSlice';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -30,26 +31,21 @@ function EmployeeForm(props) {
     const [row] = useState(props.data);
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
     const dispatch = useDispatch();
-    const apiCalled = useSelector(getApiCalled);
+    const apiTransaction = useSelector(getApiTransaction);
 
     useEffect(() => {
         setFormValue();
     }, [])
 
     useEffect(() => {
-        if (apiCalled) {
-            if (row?.EmployeeId === "") {
-                toast.success('Employee added successfully');
-            }
-            else {
-                toast.success('Employee updated successfully');
-            }
-            props.handleDialogClose(false);
-        }
-        dispatch(fetchAllEmployee());
-        dispatch(setApiCalled());
+        if (apiTransaction) {
+            toast.success(`Employee ${row?.EmployeeId !== '' ? 'updated' : 'added'} successfully.`);
 
-    }, [apiCalled]);
+            props.handleDialogClose(false);
+            dispatch(setApiTransaction(false));
+            dispatch(fetchAllEmployee());
+        }
+    }, [apiTransaction]);
 
     const setInitialValue = () => {
         if (row?.EmployeeId !== "") {
@@ -158,6 +154,8 @@ function EmployeeForm(props) {
             //     });
 
             dispatch(saveEmployee(formData));
+
+            //dispatch(saveEmployeeThunk(formData));
         }
     }
 
@@ -169,32 +167,34 @@ function EmployeeForm(props) {
 
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
-                        <TextField fullWidth name="firstname" label="First Name" value={formik.values.firstname}
+                        <TextField fullWidth variant="outlined" name="firstname" label="First Name" value={formik.values.firstname}
                             onChange={formik.handleChange} error={formik.touched.firstname && Boolean(formik.errors.firstname)}
                             helperText={formik.touched.firstname && formik.errors.firstname}
                         ></TextField>
                     </Grid>
                     <Grid item xs={4}>
-                        <TextField fullWidth name="lastname" label="Last Name" value={formik.values.lastname}
+                        <TextField fullWidth variant="outlined" name="lastname" label="Last Name" value={formik.values.lastname}
                             onChange={formik.handleChange} error={formik.touched.lastname && Boolean(formik.errors.lastname)}
                             helperText={formik.touched.lastname && formik.errors.lastname}
                         ></TextField>
                     </Grid>
                     <Grid item xs={4}>
-                        <TextField fullWidth name="salary" label="Salary" value={formik.values.salary}
+                        <TextField fullWidth variant="outlined" name="salary" label="Salary" value={formik.values.salary}
                             onChange={formik.handleChange} error={formik.touched.salary && Boolean(formik.errors.salary)}
                             helperText={formik.touched.salary && formik.errors.salary}
                         ></TextField>
                     </Grid>
 
-                    <Grid item xs={6}>
-                        <TextField fullWidth name="address1" label="Address 1" value={formik.values.address1}
+                    <Grid item xs={12}>
+                        <TextField fullWidth multiline rows={2} maxRows={4} variant="outlined"
+                            name="address1" label="Address 1" value={formik.values.address1}
                             onChange={formik.handleChange} error={formik.touched.address1 && Boolean(formik.errors.address1)}
                             helperText={formik.touched.address1 && formik.errors.address1}
                         ></TextField>
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField fullWidth name="address2" label="Address 2" value={formik.values.address2}
+                    <Grid item xs={12}>
+                        <TextField fullWidth multiline rows={2} maxRows={4} variant="outlined"
+                            name="address2" label="Address 2" value={formik.values.address2}
                             onChange={formik.handleChange} error={formik.touched.address2 && Boolean(formik.errors.address2)}
                             helperText={formik.touched.address2 && formik.errors.address2}
                         ></TextField>

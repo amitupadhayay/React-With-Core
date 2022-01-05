@@ -7,7 +7,6 @@ function CommonLoaderIcon(props) {
         <div className='text-center m-16'>
         <React.Fragment>
           <CircularProgress size={30} color='primary' />
-          {/* <LinearProgress variant="determinate" value={normalise(props.value)} /> */}
         </React.Fragment>
         </div>
       )

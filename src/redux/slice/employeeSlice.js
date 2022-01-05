@@ -1,17 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
+import APIService from '../../Services/APIService';
+import ControllerName from '../../Constants/global-constant';
 
-// const saveEmployee = createAsyncThunk("employee/saveEmployee", async () => {
-//     return await "";
-// });
+export const saveEmployeeThunk = createAsyncThunk("employee/saveEmployee", async (formData) => {
+    const resp = await APIService.post("AddEditEmployee", ControllerName.Employee, formData);
+    return resp.data;
+});
 
 const initialState = {
     authenticated: false,
     loading: false,
+    apiTransaction: false,
     allEmployee: [],
     selectedEmployee: {},
-    commonError: "",
-    apiCalled: false,
 }
 
 export const employeeSlice = createSlice({
@@ -35,30 +37,38 @@ export const employeeSlice = createSlice({
             state.loading = false;
             state.selectedEmployee = action.payload;
         },
+        setApiTransaction: (state, action) => {
+            state.apiTransaction = action.payload;
+        },
+        saveEmployee: (state, action) => {
+            state.loading = false;
+            state.apiTransaction = false;
+        },
+        saveEmployeeSuceess: (state, action) => {
+            state.loading = false;
+            state.apiTransaction = true;
+        },
         setCommonError: (state) => {
             state.loading = false;
             toast.error('Something went wrong');
         },
-        setApiCalled: (state, action) => {
-            state.apiCalled = false;
-        },
-        saveEmployee: (state, action) => {
-            state.apiCalled = false;
-        },
-        saveEmployeeSuceess: (state, action) => {
-            state.apiCalled = true;
-        },
-
     },
     extraReducers: {
-
+        [saveEmployeeThunk.pending]: (state) => {
+            console.log('pending');
+            return { ...state, loading: true };
+        },
+        [saveEmployeeThunk.fulfilled]: (state, action) => {
+            console.log('api call');
+            return { ...state, loading: false };
+        },
     }
 });
 
 export const {
     setAuthentication,
     fetchAllEmployee, fetchAllEmployeeSuccess, fetchSelectedEmployee, fetchSelectedEmployeeSuccess,
-    setCommonError, setApiCalled, saveEmployee, saveEmployeeSuceess,
+    setCommonError, setApiTransaction, saveEmployee, saveEmployeeSuceess,
 } = employeeSlice.actions;
 
 export const getAuthentication = (state => state.employeeSlice.authenticated);
@@ -66,6 +76,6 @@ export const getLoading = (state => state.employeeSlice.loading);
 export const getAllEmployee = (state => state.employeeSlice.allEmployee);
 export const getSelectedEmployee = (state => state.employeeSlice.selectedEmployee);
 export const getCommonError = (state => state.employeeSlice.commonError);
-export const getApiCalled = (state => state.employeeSlice.apiCalled);
+export const getApiTransaction = (state => state.employeeSlice.apiTransaction);
 
 export default employeeSlice.reducer;

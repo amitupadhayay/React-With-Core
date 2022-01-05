@@ -1,12 +1,11 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import axiosAPI from '../../Services/axiosAPI';
 import {
-    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess,
-    setCommonError, saveEmployeeSuceess
+    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess, saveEmployeeSuceess,setCommonError
 }
     from '../slice/employeeSlice';
 import ControllerName from '../../Constants/global-constant';
-import APIService from '../../Services/APIService'
+import APIService from '../../Services/APIService';
 
 
 function* fetchAllEmployeeFunc() {
@@ -49,5 +48,5 @@ function* saveEmployeeFunc(action) {
 }
 
 export function* saveEmployeeSaga() {
-    yield takeEvery('employee/saveEmployee', saveEmployeeFunc)
+    yield takeEvery('employee/saveEmployee', saveEmployeeFunc);
 }

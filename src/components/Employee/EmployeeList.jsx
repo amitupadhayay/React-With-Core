@@ -28,7 +28,6 @@ import DialogComponent from '../../CommonComponent/DialogComponent';
 function EmployeeList(props) {
 
     const [columns, setColumns] = useState([]);
-    //const [loading, setLoading] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
     const [confimDialog, setConfimDialog] = useState(false);
     const [dialogData, setDialogData] = useState({});
@@ -170,7 +169,7 @@ function EmployeeList(props) {
                     data={employeeList}
                     pagination
                     highlightOnHover
-                    progressPending={loading ? true : false}
+                    progressPending={loading}
                     progressComponent={<CommonLoaderIcon />}
                     persistTableHead
                     selectableRows // add for checkbox selection

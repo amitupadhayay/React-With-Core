@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import { configureStore } from '@reduxjs/toolkit';
 import employeeSlice from './slice/employeeSlice';
+import commonSlice from './slice/commonSlice';
 import {rootSaga} from './saga/rootSaga';
 
 // const composeEmhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -19,6 +20,7 @@ const saga = createSagaMiddleware();
 const store = configureStore({
     reducer: {
         employeeSlice: employeeSlice,
+        commonSlice: commonSlice,
     },
     middleware: [saga,thunk],
 });
