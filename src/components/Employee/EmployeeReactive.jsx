@@ -22,7 +22,7 @@ function EmployeeReactive(props) {
     }, []);
 
     const getColumns = () => {
-        setColumns(EmployeeService.getColumns());
+        setColumns(EmployeeService.getEmployeeColumns());
     }
 
     const getList = () => {

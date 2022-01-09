@@ -19,22 +19,30 @@ import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
 import RouteService from '../../Services/RouteService';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployees } from '../../redux/actions/employeeActions';
-import { fetchAllEmployee, getLoading, getAllEmployee, getCommonError } from '../../redux/slice/employeeSlice';
+import {
+    fetchAllEmployee, getLoading, getAllEmployee, getCommonError, deleteEmployee,
+    getApiTransaction, setApiTransaction
+} from '../../redux/slice/employeeSlice';
 import Button from '@material-ui/core/Button';
 import { useNavigate } from 'react-router-dom';
 import DialogComponent from '../../CommonComponent/DialogComponent';
+import { Edit, EditOutlined, EditRounded, DeleteForever } from '@material-ui/icons';
+import { getDialogState, setDialogState } from '../../redux/slice/commonSlice';
 
 
 function EmployeeList(props) {
 
     const [columns, setColumns] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [confimDialog, setConfimDialog] = useState(false);
+    //const [openDialog, setOpenDialog] = useState(false);
+    const [confirmPopup, setConfirmPopup] = useState(false);
     const [dialogData, setDialogData] = useState({});
+    const [addEmployeePopup, setAddEmployeePopup] = useState({});
 
     //const employeeList = useSelector((state) => state.allEmployee.employees);
     const employeeList = useSelector(getAllEmployee);
     const loading = useSelector(getLoading);
+    const apiTransaction = useSelector(getApiTransaction);
+    const dialogState = useSelector(getDialogState);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -45,19 +53,26 @@ function EmployeeList(props) {
         dispatch(fetchAllEmployee());
     }, [dispatch]);
 
+    useEffect(() => {
+        if (apiTransaction) {
+            dispatch(setApiTransaction(false));
+            dispatch(fetchAllEmployee());
+        }
+    }, [apiTransaction]);
+
     const getColumns = () => {
-        let cols = EmployeeService.getColumns();
+        let cols = [];
         cols.push({
-            name: '', sortable: false, width: '50px',
-            cell: (row, index) => <div className='flex'>
-                <div className='width-50'>
-                    <FaIcons.FaUserEdit className='main-color' onClick={() => handleEdit(row)}></FaIcons.FaUserEdit>
-                </div>
-                <div className='width-50 pl-8'>
-                    <AiIcons.AiFillDelete className='main-color' onClick={() => handleDelete(row)}></AiIcons.AiFillDelete>,
-                </div>
+            name: 'Action', sortable: false, className: 'action-width',
+            cell: (row, index) => <div>
+                <EditRounded className='main-color' onClick={() => handleEdit(row)}></EditRounded>
+                <DeleteForever className='main-color' onClick={() => handleDelete(row)}></DeleteForever>
             </div>
         });
+        let allRows = EmployeeService.getEmployeeColumns();
+        for (let r of allRows) {
+            cols.push(r);
+        }
         setColumns(cols);
     }
 
@@ -78,17 +93,31 @@ function EmployeeList(props) {
         //     });
 
         //dispatch(fetchEmployees());
-        //setLoading(false);
-    }
-
-    const handleEdit = (row) => {
-        attachDialogData(row);
-        setOpenDialog(true);
+        //setLoading(false);       
     }
 
     const handleDelete = (row) => {
         attachConfirmDialogData(row);
-        setConfimDialog(true);
+    }
+
+    const attachConfirmDialogData = (row) => {
+        let message = 'Are you sure?';
+        setDialogData({
+            width: '30vh',
+            height: '10vh',
+            //id: row.EmployeeId,
+            title: 'confirmation',
+            component: <ConfirmComponent id={row?.EmployeeId} message={message} confirmDailogClose={confirmDailogClose}></ConfirmComponent>
+        });
+        setConfirmPopup(true);
+        dispatch(setDialogState(true));
+    }
+
+    const confirmDailogClose = (id, resp) => {
+        if (resp) {
+            dispatch(deleteEmployee(id));
+        }
+        handleDialogClose(false);
     }
 
     const handleRowSelection = (state) => {
@@ -99,56 +128,27 @@ function EmployeeList(props) {
         navigate(`/employee/${row.Id}`);
     };
 
-
-    const confirmDailogClose = (row, resp) => {
-        if (resp) {
-            deleteEmployee(row.id);
-        }
-        else {
-            setConfimDialog(false);
-        }
-    }
-
-    const deleteEmployee = (id) => {
-        EmployeeService.deleteEmployee(id)
-            .then(response => {
-                toast.success('Employee deleted successfully');
-                setConfimDialog(false);
-                getEmployeeList();
-            })
-            .catch(function (error) {
-                toast.error(error);
-            })
-    }
-
     const handleDialogClose = (resp) => {
-        setOpenDialog(resp);
-        setConfimDialog(resp);
-        if (resp) {
-            getEmployeeList();
-        }
+        dispatch(setDialogState(resp));
+        setAddEmployeePopup(resp);
+        setConfirmPopup(resp);
     };
 
+    const handleEdit = (row) => {
+        attachDialogData(row);
+    }
 
     const attachDialogData = (row) => {
         setDialogData({
             // width: '50vh',
             // height: '50vh',
-            employeeId: row?.EmployeeId == null ? 0 : row?.EmployeeId,
+            //employeeId: row?.EmployeeId == null ? 0 : row?.EmployeeId,
             row: row,
             title: row?.EmployeeId == null ? 'Add Employee' : "Edit Employee",
             component: <EmployeeForm data={row} handleDialogClose={handleDialogClose}></EmployeeForm>
         });
-        setOpenDialog(true);
-    }
-
-    const attachConfirmDialogData = (row) => {
-        setDialogData({
-            id: row.EmployeeId,
-            title: 'confirm',
-            message: 'Are you sure?'
-        });
-        setConfimDialog(true);
+        dispatch(setDialogState(true));
+        setAddEmployeePopup(true);
     }
 
     const goToEmployeeServer = () => {
@@ -173,6 +173,7 @@ function EmployeeList(props) {
                     progressComponent={<CommonLoaderIcon size={40} text='Loading... Please Wait' />}
                     persistTableHead
                     selectableRows // add for checkbox selection
+                    selectableRowsHighlight
                     onSelectedRowsChange={handleRowSelection}
                     onRowClicked={handleRowClicked}
                 />
@@ -187,15 +188,22 @@ function EmployeeList(props) {
                 <EmployeeForm data={dialogData} handleDialogClose={handleDialogClose}></EmployeeForm>
             </Dialog> */}
 
-            {openDialog ? (
-                <DialogComponent data={dialogData} handleDialogClose={handleDialogClose}>
-                </DialogComponent>
-            ) : null}
-
             {/* <Dialog open={confimDialog} aria-labelledby="form-dialog-title" className='p-8'>
                 <DialogTitleComponent data={dialogData} handleDialogClose={handleDialogClose}></DialogTitleComponent>
                 <ConfirmComponent data={dialogData} confirmDailogClose={confirmDailogClose}></ConfirmComponent>
             </Dialog> */}
+
+            {dialogState && addEmployeePopup ? (
+                <DialogComponent data={dialogData} handleDialogClose={handleDialogClose}>
+                </DialogComponent>
+            ) : null}
+
+            {dialogState && confirmPopup ? (
+                <DialogComponent data={dialogData} handleDialogClose={handleDialogClose}>
+                </DialogComponent>
+            ) : null}
+
+
 
         </div >
     );

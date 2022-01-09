@@ -20,11 +20,11 @@ class APIConfiguration {
   //   return axios.post(this.mainURL + ctrl + methodName, params, this.headers);
   // }
 
-  post = async (methodName, ctrl, params) => {
+  post = async (ctrl, methodName, params) => {
     return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
   }
 
-  delete(methodName, ctrl) {
+  delete(ctrl, methodName) {
     return axios.delete(this.mainURL + ctrl + methodName);
   }
 

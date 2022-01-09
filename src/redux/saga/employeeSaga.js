@@ -1,11 +1,14 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import axiosAPI from '../../Services/axiosAPI';
 import {
-    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess, saveEmployeeSuceess,setCommonError
+    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess, saveEmployeeSuceess,
+    setCommonError, deleteEmployeeSuceess, modifyEmployeeData,removeEmployeeData
 }
     from '../slice/employeeSlice';
+import {setDialogState} from '../slice/commonSlice';
 import ControllerName from '../../Constants/global-constant';
 import APIService from '../../Services/APIService';
+import { toast } from 'react-toastify';
 
 
 function* fetchAllEmployeeFunc() {
@@ -39,14 +42,34 @@ export function* fetchSelectedEmployeeSaga() {
 
 function* saveEmployeeFunc(action) {
     try {
-        const resp = yield call(() => APIService.post("AddEditEmployee", ControllerName.Employee, action.payload));
-        yield put(saveEmployeeSuceess(resp));
+        const resp = yield call(() => APIService.post(ControllerName.Employee, "AddEditEmployee", action.payload));
+        yield put(saveEmployeeSuceess());
+        yield put(setDialogState(false));
+        yield put(modifyEmployeeData(resp?.data));       
+        toast.success(`Employee ${action.payload?.EmployeeId === null ? 'added' : 'updated'} successfully.`);
+    }
+    catch (error) {
+        yield put(setCommonError(error));
+        toast.error('Something went wrong');
+    }
+}
+
+export function* saveEmployeeSaga() {
+    yield takeEvery('employee/saveEmployee', saveEmployeeFunc);
+}
+
+function* deleteEmployeeFunc(action) {
+    try {
+        const resp = yield call(() => APIService.delete(ControllerName.Employee, "DeleteEmployee(employeeId=" + action.payload + ")"));
+        yield put(deleteEmployeeSuceess(resp));
+        yield put(removeEmployeeData(action?.payload));               
+        toast.success(`Employee deleted successfully.`);
     }
     catch (error) {
         yield put(setCommonError(error));
     }
 }
 
-export function* saveEmployeeSaga() {
-    yield takeEvery('employee/saveEmployee', saveEmployeeFunc);
+export function* deleteEmployeeSaga() {
+    yield takeEvery('employee/deleteEmployee', deleteEmployeeFunc);
 }

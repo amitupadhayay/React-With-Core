@@ -50,7 +50,7 @@ function EmployeeDetails(props) {
     return (
         <div>
             <div className='sub-header'>
-                <span onClick={() => goBack()}><FaIcons.FaBackward></FaIcons.FaBackward> Back </span>
+                <span className='pl-16' onClick={() => goBack()}><FaIcons.FaBackward></FaIcons.FaBackward> Back </span>
             </div>
             <div className="card">
                 {loading ? (<CommonLoaderIcon />) : (

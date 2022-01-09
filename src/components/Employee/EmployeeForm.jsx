@@ -9,10 +9,10 @@ import Grid from '@material-ui/core/Grid';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-//import { TextField, Button, } from "@material-ui/core";
-import { saveIcon } from "@material-ui/core/Icon";
+//import Button from "@material-ui/core/Button";
+//import TextField from "@material-ui/core/TextField";
+import { TextField, Button, } from "@material-ui/core";
+import { Save } from '@material-ui/icons';
 
 import EmployeeService from '../../Services/EmployeeService';
 import * as FaIcons from 'react-icons/fa';
@@ -24,7 +24,7 @@ import { getApiTransaction, setApiTransaction, getAllEmployee, fetchAllEmployee,
 
 import { GlobalVariable } from '../../Constants/global-constant';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
-import { timeout } from 'rxjs-compat/operator/timeout';
+import { Select, MenuItem } from '@material-ui/core';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -36,22 +36,23 @@ function EmployeeForm(props) {
     const [row] = useState(props.data);
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
     const dispatch = useDispatch();
-    const apiTransaction = useSelector(getApiTransaction);
     const loading = useSelector(getLoading);
+    const [employeeTypeList, setEmployeeTypeList] = useState([]);
 
     useEffect(() => {
         setFormValue();
-    }, [])
+        getEmployeeTypeList();
+    }, []);
 
-    useEffect(() => {
-        if (apiTransaction) {
-            toast.success(`Employee ${row?.EmployeeId !== '' ? 'updated' : 'added'} successfully.`);
-
-            props.handleDialogClose(false);
-            dispatch(setApiTransaction(false));
-            dispatch(fetchAllEmployee());
-        }
-    }, [apiTransaction]);
+    const getEmployeeTypeList = () => {
+        let list = [];
+        list.push({ Text: "Permanent", Value: 0 });
+        list.push({ Text: "Temporary", Value: 1 });
+        list.push({ Text: "Contract", Value: 2 });
+        list.push({ Text: "Payroll", Value: 3 });
+        list.push({ Text: "Third Party", Value: 4 });
+        setEmployeeTypeList(list);
+    }
 
     const setInitialValue = () => {
         if (row?.EmployeeId !== "") {
@@ -79,7 +80,7 @@ function EmployeeForm(props) {
         lastname: yup.string().required("Last Name is required"),
         //salary: yup.number().integer().required("Salary is required"),
         salary: yup.string().required('Salary is required')
-            .matches(GlobalVariable.DecimalOnly, "errr"),
+            .matches(GlobalVariable.DecimalOnly, GlobalVariable.DecimalOnlyMsg),
         address1: yup.string().required("Address1 is required"),
         address2: yup.string().required("Address2 is required"),
     });
@@ -141,7 +142,7 @@ function EmployeeForm(props) {
         formik.touched = true;
         if (formik.isValid) {
             let formData = {
-                EmployeeId: row === null ? 0 : row?.EmployeeId,
+                EmployeeId: row === null ? null : row?.EmployeeId,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
                 Salary: parseInt(formik.values.salary),
@@ -149,6 +150,8 @@ function EmployeeForm(props) {
                 Address2: formik.values.address2,
                 CreatedDate: new Date(),
                 ModifiedDate: new Date(),
+                EmployeeType: formik.values.employeetype,
+                EmployeeTypeName: formik.values.employeetype,
             };
 
             // EmployeeService.saveEmployee(formData)
@@ -197,6 +200,15 @@ function EmployeeForm(props) {
                         ></TextField>
                     </Grid>
 
+                    <Grid item xs={4}>
+                        <Select >
+                            {employeeTypeList.map((item, index) => (
+                                < MenuItem value={item.Value}>{item.Text}</MenuItem>
+                            ))}
+                        </Select>
+
+                    </Grid>
+
                     <Grid item xs={12}>
                         <TextField fullWidth multiline rows={2} maxRows={4} variant="outlined"
                             name="address1" label="Address 1" value={formik.values.address1}
@@ -214,9 +226,10 @@ function EmployeeForm(props) {
 
                     <Grid item xs={7}></Grid>
                     <Grid item xs={5}>
-                        <Button disabled={!formik.isValid} variant="contained" type="submit" onClick={saveEmplyee}>
+                        <Button variant="contained" type="submit" onClick={saveEmplyee}>
                             {loading ? <CommonLoaderIcon size={20} text="Saving..." /> : <>
-                                <FaIcons.FaSave className='btn-icon'></FaIcons.FaSave>
+                                {/* <FaIcons.FaSave className='btn-icon'></FaIcons.FaSave> */}
+                                <Save className='btn-icon'></Save>
                                 Save Employee </>
                             }
                         </Button>
@@ -229,7 +242,7 @@ function EmployeeForm(props) {
             </form>
 
 
-        </div>
+        </div >
     )
 }
 

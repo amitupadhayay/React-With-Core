@@ -42,15 +42,31 @@ export const employeeSlice = createSlice({
         },
         saveEmployee: (state, action) => {
             state.loading = true;
-            state.apiTransaction = false;
+            //state.apiTransaction = false;
         },
         saveEmployeeSuceess: (state, action) => {
             state.loading = false;
-            state.apiTransaction = true;
+            //state.apiTransaction = true;
+        },
+        modifyEmployeeData: (state, action) => {
+            let employeeList = JSON.parse(JSON.stringify(state.allEmployee));
+            employeeList = employeeList.filter(x => x.EmployeeId !== action.payload?.EmployeeId);
+            state.allEmployee = [action.payload, ...employeeList];
         },
         setCommonError: (state) => {
             state.loading = false;
             toast.error('Something went wrong');
+        },
+        deleteEmployee: (state) => {
+            state.loading = true;
+        },
+        deleteEmployeeSuceess: (state) => {
+            state.loading = false;
+        },
+        removeEmployeeData: (state, action) => {
+            let employeeList = JSON.parse(JSON.stringify(state.allEmployee));
+            employeeList = employeeList.filter(x => x.EmployeeId !== action?.payload);
+            state.allEmployee = [...employeeList];
         },
     },
     extraReducers: {
@@ -59,7 +75,7 @@ export const employeeSlice = createSlice({
             return { ...state, loading: true };
         },
         [saveEmployeeThunk.fulfilled]: (state, action) => {
-            console.log('api call');
+            console.log('api call done');
             return { ...state, loading: false };
         },
     }
@@ -68,7 +84,8 @@ export const employeeSlice = createSlice({
 export const {
     setAuthentication,
     fetchAllEmployee, fetchAllEmployeeSuccess, fetchSelectedEmployee, fetchSelectedEmployeeSuccess,
-    setCommonError, setApiTransaction, saveEmployee, saveEmployeeSuceess,
+    setCommonError, setApiTransaction, saveEmployee, saveEmployeeSuceess, modifyEmployeeData,
+    deleteEmployee, deleteEmployeeSuceess, removeEmployeeData,
 } = employeeSlice.actions;
 
 export const getAuthentication = (state => state.employeeSlice.authenticated);

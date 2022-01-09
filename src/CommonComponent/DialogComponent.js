@@ -23,7 +23,6 @@ const DialogComponent = (props) => {
                         <div className="flex full-width title-pad">
                             <div className='width-95 text-left pl-8'>{dialogData.title === undefined ? 'Title' : dialogData.title}</div>
                             <div className='width-5 text-right '>
-                                {/* <AiIcons.AiOutlineCloseCircle className='dialog-close-btn' onClick={() => handleDialogClose(false)}></AiIcons.AiOutlineCloseCircle> */}
                                 <Cancel className='dialog-close-btn' onClick={() => handleDialogClose(false)}></Cancel>
                             </div>
                         </div>

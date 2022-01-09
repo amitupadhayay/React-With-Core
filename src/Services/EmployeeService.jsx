@@ -22,9 +22,8 @@ class EmployeeService {
     }
 
 
-    getColumns = () => {
-        let columnList = [];
-        columnList = [
+    getEmployeeColumns = () => {
+        let columnList = [
             { name: 'First Name', selector: 'FirstName', sortable: true, width: '150px', },
             { name: 'Last Name', selector: 'LastName', sortable: true, width: '150px', },
             { name: 'Age', selector: 'Age', sortable: true, width: '100px', },

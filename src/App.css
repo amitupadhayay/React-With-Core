@@ -201,7 +201,7 @@ margin-top: 8px;
   }
 
   .MuiPaper-root {
-    padding: 20px !important;
+    padding: 30px !important;
   }
 
   .dialog-title{
@@ -210,7 +210,7 @@ margin-top: 8px;
     background-color: var(--mainColor) !important;
     text-align: left;
     color: #fff;
-    margin: -20px !important;
+    margin: -30px !important;
     text-transform: uppercase;
     margin-bottom: 10px !important;
   }
@@ -233,7 +233,7 @@ margin-top: 8px;
   .btn-icon{
     /* padding-left: 10px; */
     padding-right: 10px;
-    font-size:27px
+    font-size:33px !important
   }
 
   svg{
@@ -272,4 +272,8 @@ margin-top: 8px;
     justify-content: center;
     width: 50%;
     height: 50%;
+  }
+
+  .action-width{
+    width: 10px !important;
   }

@@ -53,9 +53,7 @@ function Login(props) {
     });
 
     const handleBlur = (e) => {
-        setTimeout(() => {
-            formik.setFieldTouched(e.target.name, true);
-        }, 10);
+        formik.setFieldTouched(e.target.name, true);
     }
 
     const handleLogin = () => {
@@ -65,7 +63,6 @@ function Login(props) {
                     if (response.data.Token != null) {
                         localStorage.setItem('token', response.data.Token);
                         toast.success('Login done successfully');
-                        //RouteService.navigateByHistory(history,'/employee');
                         dispatch(setAuthentication(true));
                         navigate('/employee');
                     }
@@ -90,7 +87,7 @@ function Login(props) {
                                 <Grid container spacing={3}>
                                     <Grid item xs={2}></Grid>
                                     <Grid item xs={8}>
-                                        <TextField fullWidth name="username" label="User Name" value={formik.values.username}
+                                        <TextField fullWidth variant="outlined" name="username" label="User Name" value={formik.values.username}
                                             onChange={formik.handleChange} error={formik.touched.username && Boolean(formik.errors.username)}
                                             helperText={formik.touched.username && formik.errors.username}
                                         ></TextField>
@@ -99,7 +96,7 @@ function Login(props) {
 
                                     <Grid item xs={2}></Grid>
                                     <Grid item xs={8}>
-                                        <TextField type='password' fullWidth name="password" label="Password" value={formik.values.password}
+                                        <TextField type='password' variant="outlined" fullWidth name="password" label="Password" value={formik.values.password}
                                             onChange={formik.handleChange} error={formik.touched.password && Boolean(formik.errors.password)}
                                             helperText={formik.touched.password && formik.errors.password}
                                         ></TextField>
