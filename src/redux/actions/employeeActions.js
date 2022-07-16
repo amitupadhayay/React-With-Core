@@ -12,5 +12,5 @@ export const fetchCurrentEmployee = (employeeId) => {
     return async (dispatch) => {
         const resp = await EmployeeService.getEmployeeDetails(employeeId);
         dispatch({ type: ActionTypes.FETCH_CURRENT_EMPLOYEE, payload: resp.data })
-    }
+    } 
 }
