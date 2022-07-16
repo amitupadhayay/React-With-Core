@@ -4,7 +4,7 @@ import { BrowserRouter as Router} from 'react-router-dom';
 //import { Router } from 'react-router-dom';
 import history from './history';
 
-// all chnages
+// all chnages zxzxzx
 
 function App() {
 
