@@ -6,19 +6,17 @@ class APIConfiguration {
     "Content-type": "application/json",
     'Accept': 'application/json',
   }
-  mainURL = `https://localhost:44319/api/`;
 
-  get = async (methodName, ctrl) => {
+  mainURL = `https://localhost:44319/api/`;
+  //djangoURL = 'http://127.0.0.1:8000/'
+
+  get = async (ctrl, methodName) => {
     return await axios.get(this.mainURL + ctrl + methodName, this.headers);
   }
 
-  getData(methodName, ctrl) {
+  getData(ctrl, methodName) {
     return axios.get(this.mainURL + ctrl + methodName, this.headers);
   }
-
-  // post(methodName, ctrl, params) {
-  //   return axios.post(this.mainURL + ctrl + methodName, params, this.headers);
-  // }
 
   post = async (ctrl, methodName, params) => {
     return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
@@ -27,6 +25,14 @@ class APIConfiguration {
   delete(ctrl, methodName) {
     return axios.delete(this.mainURL + ctrl + methodName);
   }
+
+  // djangoGet = async (methodName) => {
+  //   return await axios.get(this.djangoURL + methodName, this.headers);
+  // }
+
+  // djangoPost = async (methodName, params) => {
+  //   return await axios.post(this.djangoURL + methodName, params, this.headers);
+  // }
 
   // getAll() {
   //   return http.get("/tutorials");

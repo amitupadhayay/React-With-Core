@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
 import './Navbar.css';
 import '../../App.css'
-import { IconContext } from 'react-icons';
 import { Routes, Link, Route } from 'react-router-dom'
 //import AppBar from '@material-ui/core/AppBar';
 //import Toolbar from '@material-ui/core/Toolbar';
@@ -20,8 +17,10 @@ import CoreService from './CoreService';
 import RouteService from '../../Services/RouteService';
 import EmployeeDetails from '../Employee/EmployeeDetails';
 import { useNavigate } from 'react-router-dom';
-import { getAuthentication, setAuthentication } from '../../redux/slice/employeeSlice';
+import { getAuthentication, setAuthentication } from '../../redux/slice/commonSlice';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { People, PeopleAlt, PeopleAltOutlined, PeopleAltRounded, BarChart } from '@material-ui/icons';
 
 
 function Navbar(props) {
@@ -42,9 +41,9 @@ function Navbar(props) {
         checkAuthenticated();
     }, []);
 
-    useEffect(() => {
-        getPageName(history.location.pathname);
-    }, [history]);
+    // useEffect(() => {
+    //     getPageName(history.location.pathname);
+    // }, [history]);
 
     const checkAuthenticated = () => {
         authenticated = CoreService.checkToken();
@@ -55,10 +54,10 @@ function Navbar(props) {
 
     const getAappMenuList = () => {
         let menuList = [];
-        menuList.push({ AppCode: "Dashboard", AppName: "Dashboard", url: "/dashboard", icon: <AiIcons.AiFillDashboard></AiIcons.AiFillDashboard> });
-        menuList.push({ AppCode: "Employee", AppName: "Employee", url: "/employee", icon: <FaIcons.FaUserAlt></FaIcons.FaUserAlt> });
-        menuList.push({ AppCode: "EmployeeServer", AppName: "Employee Server", url: "/employeeserver", icon: <FaIcons.FaUserShield></FaIcons.FaUserShield> });
-        menuList.push({ AppCode: "EmployeeReactive", AppName: "Employee Reactive", url: "/employeereactive", icon: <FaIcons.FaUserGraduate></FaIcons.FaUserGraduate> });
+        menuList.push({ AppCode: "Dashboard", AppName: "Dashboard", url: "/dashboard", icon: <People></People> });
+        menuList.push({ AppCode: "Employee", AppName: "Employee", url: "/employee", icon: <PeopleAlt></PeopleAlt> });
+        menuList.push({ AppCode: "EmployeeServer", AppName: "Employee Server", url: "/employeeserver", icon: <PeopleAltOutlined></PeopleAltOutlined> });
+        menuList.push({ AppCode: "EmployeeReactive", AppName: "Employee Reactive", url: "/employeereactive", icon: <PeopleAltRounded></PeopleAltRounded> });
         setAppList(menuList);
     }
 
@@ -67,18 +66,6 @@ function Navbar(props) {
     }
 
     const getPageName = (navUrl) => {
-        // if (name === "/" || name === "/employee") {
-        //     name = "Employee"
-        // }
-        // else if (name === "/employeeserver") {
-        //     name = "Employee Server"
-        // }
-        // else if (name === "/employeereactive") {
-        //     name = "Employee Reactive"
-        // }
-        // else {
-        //     name = name.replace('/', '');
-        // }
         let split = navUrl.split('/');
         let text = split.length > 0 ? '/' + split[1] : '';
         setCurrentUrl(text);
@@ -114,11 +101,11 @@ function Navbar(props) {
     return (
         <div>
             {authenticated ?
-                <IconContext.Provider value={{ color: '#fff' }}>
+                <>
                     <div className="navbar full-width">
                         <div className='width-50'>
                             <Link to="#" className="menu-bars">
-                                <FaIcons.FaBars onClick={showSidebar}></FaIcons.FaBars>
+                                <BarChart onClick={showSidebar}></BarChart>
                                 <span className='white-color pl-8'>REACT-DEMO</span>
                             </Link>
                         </div>
@@ -126,13 +113,13 @@ function Navbar(props) {
                             <span className='white-color toolbar-spacer text-center'>{pageName}</span>
                         </div>
                         <div className='width-25 text-right pr-16'>
-                            <AiIcons.AiFillAccountBook onClick={handleProfileClick}></AiIcons.AiFillAccountBook>
+                            <People onClick={handleProfileClick}></People>
                             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleProfileClose}>
                                 <MenuItem onClick={handleProfileClose}>
-                                    <AiIcons.AiFillProfile></AiIcons.AiFillProfile>Profile
+                                    <People></People>Profile
                                 </MenuItem>
                                 <MenuItem onClick={handleLogout}>
-                                    <AiIcons.AiOutlineLogout></AiIcons.AiOutlineLogout>Logout
+                                    <People></People>Logout
                                 </MenuItem>
                             </Menu>
 
@@ -143,10 +130,7 @@ function Navbar(props) {
                     <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                         <ul className='nav-menu-items'>
                             <li className='navbar-toggle' onClick={showSidebar}>
-                                <Link to="#" className='menu-bars'>
-                                    <FaIcons.FaBars onClick={showSidebar}></FaIcons.FaBars>
-                                    <span className='white-color pl-8'>REACT-DEMO</span>
-                                </Link>
+
                             </li>
 
                             {appList.map((item, index) => (
@@ -171,7 +155,7 @@ function Navbar(props) {
 
                     </main>
 
-                </IconContext.Provider>
+                </>
                 :
                 <Routes>
                     <Route exact path='/' element={<Login />}></Route>

@@ -11,20 +11,18 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 //import Button from "@material-ui/core/Button";
 //import TextField from "@material-ui/core/TextField";
-import { TextField, Button, } from "@material-ui/core";
+import { TextField, Button, InputLabel, FormControl, Select, MenuItem } from "@material-ui/core";
 import { Save } from '@material-ui/icons';
 
 import EmployeeService from '../../Services/EmployeeService';
-import * as FaIcons from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
-import { getLoading, saveEmployee } from '../../redux/slice/employeeSlice';
+import { getDialogLoading, saveEmployee } from '../../redux/slice/employeeSlice';
 import { getApiTransaction, setApiTransaction, getAllEmployee, fetchAllEmployee, saveEmployeeThunk } from '../../redux/slice/employeeSlice';
 
 import { GlobalVariable } from '../../Constants/global-constant';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
-import { Select, MenuItem } from '@material-ui/core';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -36,7 +34,7 @@ function EmployeeForm(props) {
     const [row] = useState(props.data);
     // const [employeeData, setEmployeeData] = useState<EmployeeProps>({});
     const dispatch = useDispatch();
-    const loading = useSelector(getLoading);
+    const loading = useSelector(getDialogLoading);
     const [employeeTypeList, setEmployeeTypeList] = useState([]);
 
     useEffect(() => {
@@ -54,6 +52,10 @@ function EmployeeForm(props) {
         setEmployeeTypeList(list);
     }
 
+    const employeeTypeChange = (event) => {
+
+    }
+
     const setInitialValue = () => {
         if (row?.EmployeeId !== "") {
             return {
@@ -62,6 +64,7 @@ function EmployeeForm(props) {
                 salary: row?.Salary,
                 address1: row?.Address1,
                 address2: row?.Address2,
+                employeetype: row?.EmployeeType,
             }
         }
         else {
@@ -70,7 +73,8 @@ function EmployeeForm(props) {
                 lastname: '',
                 salary: '',
                 address1: '',
-                address2: ''
+                address2: '',
+                employeetype: '',
             }
         }
     };
@@ -83,6 +87,7 @@ function EmployeeForm(props) {
             .matches(GlobalVariable.DecimalOnly, GlobalVariable.DecimalOnlyMsg),
         address1: yup.string().required("Address1 is required"),
         address2: yup.string().required("Address2 is required"),
+        employeetype: yup.string().nullable().required("Employee Type is required"),
     });
 
     const formik = useFormik({
@@ -90,13 +95,13 @@ function EmployeeForm(props) {
         validationSchema: validationSchema,
         validateOnMount: true,
         onSubmit: (values) => {
-            console.log('onSubmit');
+            //console.log('onSubmit');
         },
         onChange: () => {
-            console.log('onChange');
+            //console.log('onChange');
         },
         handleChange: () => {
-            console.log('handleChange');
+            //console.log('handleChange');
         }
     });
 
@@ -139,19 +144,19 @@ function EmployeeForm(props) {
     }
 
     const saveEmplyee = () => {
-        formik.touched = true;
+        //formik.touched = true;
         if (formik.isValid) {
             let formData = {
                 EmployeeId: row === null ? null : row?.EmployeeId,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
-                Salary: parseInt(formik.values.salary),
+                Salary: parseFloat(formik.values.salary),
                 Address1: formik.values.address1,
                 Address2: formik.values.address2,
                 CreatedDate: new Date(),
                 ModifiedDate: new Date(),
                 EmployeeType: formik.values.employeetype,
-                EmployeeTypeName: formik.values.employeetype,
+                EmployeeTypeText: employeeTypeList.find(x => x.Value == formik.values.employeetype)?.Text,
             };
 
             // EmployeeService.saveEmployee(formData)
@@ -181,32 +186,35 @@ function EmployeeForm(props) {
             <form className='form' onSubmit={formik.handleSubmit} onBlur={handleBlur} autoComplete="off">
 
                 <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <TextField fullWidth variant="outlined" name="firstname" label="First Name" value={formik.values.firstname}
                             onChange={formik.handleChange} error={formik.touched.firstname && Boolean(formik.errors.firstname)}
                             helperText={formik.touched.firstname && formik.errors.firstname}
                         ></TextField>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <TextField fullWidth variant="outlined" name="lastname" label="Last Name" value={formik.values.lastname}
                             onChange={formik.handleChange} error={formik.touched.lastname && Boolean(formik.errors.lastname)}
                             helperText={formik.touched.lastname && formik.errors.lastname}
                         ></TextField>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <TextField fullWidth variant="outlined" name="salary" label="Salary" value={formik.values.salary}
                             onChange={formik.handleChange} error={formik.touched.salary && Boolean(formik.errors.salary)}
                             helperText={formik.touched.salary && formik.errors.salary}
                         ></TextField>
                     </Grid>
 
-                    <Grid item xs={4}>
-                        <Select >
-                            {employeeTypeList.map((item, index) => (
-                                < MenuItem value={item.Value}>{item.Text}</MenuItem>
+                    <Grid item xs={6}>
+                        <TextField fullWidth select variant="outlined" name="employeetype" label="Employee Type" value={formik.values.employeetype}
+                            onChange={formik.handleChange} error={formik.touched.employeetype && Boolean(formik.errors.employeetype)}
+                            helperText={formik.touched.employeetype && formik.errors.employeetype}>
+                            {employeeTypeList.map((option) => (
+                                <MenuItem key={option.Value} value={option.Value}>
+                                    {option.Text}
+                                </MenuItem>
                             ))}
-                        </Select>
-
+                        </TextField>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -228,7 +236,6 @@ function EmployeeForm(props) {
                     <Grid item xs={5}>
                         <Button variant="contained" type="submit" onClick={saveEmplyee}>
                             {loading ? <CommonLoaderIcon size={20} text="Saving..." /> : <>
-                                {/* <FaIcons.FaSave className='btn-icon'></FaIcons.FaSave> */}
                                 <Save className='btn-icon'></Save>
                                 Save Employee </>
                             }

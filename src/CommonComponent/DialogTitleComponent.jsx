@@ -1,12 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
-//import DialogContent from '@material-ui/core/DialogContent';
-//import DialogActions from '@material-ui/core/DialogActions';
-//import Button from "@material-ui/core/Button";
-//import Dialog from '@material-ui/core/Dialog';
-import * as AiIcons from 'react-icons/ai';
+
 import './CommonComponent.css'
+
+import { Close, CloseOutlined } from '@material-ui/icons';
 
 function DialogTitleComponent(props) {
 
@@ -30,7 +28,7 @@ function DialogTitleComponent(props) {
                     <div className="flex full-width title-pad">
                         <div className='width-95 text-left pl-8'>{dialogData.title === undefined ? 'Title' : dialogData.title}</div>
                         <div className='width-5 text-right '>
-                            <AiIcons.AiOutlineCloseCircle className='font-size-30' onClick={() => props.handleDialogClose(false)}></AiIcons.AiOutlineCloseCircle></div>
+                            <Close className='font-size-30' onClick={() => props.handleDialogClose(false)}></Close></div>
                     </div>
                 </DialogTitle>
 

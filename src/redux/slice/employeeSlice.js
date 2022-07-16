@@ -11,7 +11,7 @@ export const saveEmployeeThunk = createAsyncThunk("employee/saveEmployee", async
 const initialState = {
     authenticated: false,
     loading: false,
-    apiTransaction: false,
+    dialogLoading: false,
     allEmployee: [],
     selectedEmployee: {},
 }
@@ -37,16 +37,11 @@ export const employeeSlice = createSlice({
             state.loading = false;
             state.selectedEmployee = action.payload;
         },
-        setApiTransaction: (state, action) => {
-            state.apiTransaction = action.payload;
-        },
         saveEmployee: (state, action) => {
-            state.loading = true;
-            //state.apiTransaction = false;
+            state.dialogState ? state.dialogLoading = true : state.loading = true;
         },
         saveEmployeeSuceess: (state, action) => {
-            state.loading = false;
-            //state.apiTransaction = true;
+            state.dialogState ? state.dialogLoading = false : state.loading = false;
         },
         modifyEmployeeData: (state, action) => {
             let employeeList = JSON.parse(JSON.stringify(state.allEmployee));
@@ -54,7 +49,7 @@ export const employeeSlice = createSlice({
             state.allEmployee = [action.payload, ...employeeList];
         },
         setCommonError: (state) => {
-            state.loading = false;
+            state.dialogState ? state.dialogLoading = false : state.loading = false;
             toast.error('Something went wrong');
         },
         deleteEmployee: (state) => {
@@ -84,12 +79,13 @@ export const employeeSlice = createSlice({
 export const {
     setAuthentication,
     fetchAllEmployee, fetchAllEmployeeSuccess, fetchSelectedEmployee, fetchSelectedEmployeeSuccess,
-    setCommonError, setApiTransaction, saveEmployee, saveEmployeeSuceess, modifyEmployeeData,
+    setCommonError, saveEmployee, saveEmployeeSuceess, modifyEmployeeData,
     deleteEmployee, deleteEmployeeSuceess, removeEmployeeData,
 } = employeeSlice.actions;
 
 export const getAuthentication = (state => state.employeeSlice.authenticated);
 export const getLoading = (state => state.employeeSlice.loading);
+export const getDialogLoading = (state => state.employeeSlice.dialogLoading);
 export const getAllEmployee = (state => state.employeeSlice.allEmployee);
 export const getSelectedEmployee = (state => state.employeeSlice.selectedEmployee);
 export const getCommonError = (state => state.employeeSlice.commonError);

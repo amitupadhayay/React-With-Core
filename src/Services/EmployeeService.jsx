@@ -6,7 +6,7 @@ import ControllerName from '../Constants/global-constant';
 class EmployeeService {
 
     getEmployeeList = async () => {
-        return await APIConfiguration.get("GetEmployeeListReact()", ControllerName.Employee);
+        return await APIConfiguration.get("GetEmployeeList()", ControllerName.Employee);
     }
 
     getEmployeeDetails = async (employeeId) => {
@@ -21,13 +21,13 @@ class EmployeeService {
         return APIConfiguration.delete("DeleteEmployee(employeeId=" + id + ")", ControllerName.Employee);
     }
 
-
     getEmployeeColumns = () => {
         let columnList = [
             { name: 'First Name', selector: 'FirstName', sortable: true, width: '150px', },
             { name: 'Last Name', selector: 'LastName', sortable: true, width: '150px', },
             { name: 'Age', selector: 'Age', sortable: true, width: '100px', },
             { name: 'Salary', selector: 'Salary', sortable: true, width: '150px', },
+            { name: 'Employee Type', selector: 'EmployeeTypeText', sortable: true, width: '150px', },
             { name: 'Address1', selector: 'Address1', sortable: true, width: '200px', },
             { name: 'Address2', selector: 'Address2', sortable: true, width: '200px', },
         ];

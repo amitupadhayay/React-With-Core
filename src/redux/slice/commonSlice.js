@@ -6,6 +6,7 @@ import ControllerName from '../../Constants/global-constant';
 const initialState = {
     commonError: "",
     dialogState: false,
+    authenticated:false,
 }
 
 export const commonSlice = createSlice({
@@ -18,7 +19,16 @@ export const commonSlice = createSlice({
         },
         setDialogState: (state, action) => {
             state.dialogState = action?.payload;
-        }
+        },
+        authentication: (state, action) => {
+            state.authenticated = false;
+        },
+        authenticationSuccess: (state, action) => {
+            state.authenticated = true;
+        },
+        setAuthentication: (state, action) => {
+            state.authenticated = action.payload;
+        },
     },
     extraReducers: {
 
@@ -26,10 +36,10 @@ export const commonSlice = createSlice({
 });
 
 export const {
-    setCommonError, setDialogState,
+    setCommonError, setDialogState,authentication,authenticationSuccess,setAuthentication
 } = commonSlice.actions;
 
-
+export const getAuthentication = (state => state.commonSlice.authenticated);
 export const getCommonError = (state => state.commonSlice.commonError);
 export const getDialogState = (state => state.commonSlice.dialogState);
 export default commonSlice.reducer;

@@ -7,7 +7,7 @@ class CoreService {
 
 
     checkAuthentication(userName, password) {
-        return APIConfiguration.get("CheckAuthentication(userName=" + userName + ",password=" + password + ")", ControllerName.Auth);
+        return APIConfiguration.get(ControllerName.Auth,"CheckAuthentication(userName=" + userName + ",password=" + password + ")");
     }
 
     checkToken() {
@@ -18,4 +18,4 @@ class CoreService {
 
 
 }
-export default new CoreService();;
+export default new CoreService();

@@ -7,24 +7,24 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
 
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeService from '../../Services/EmployeeService';
 import { fetchCurrentEmployee } from '../../redux/actions/employeeActions';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import RouteService from '../../Services/RouteService';
 import { fetchSelectedEmployee, getSelectedEmployee, getLoading } from '../../redux/slice/employeeSlice';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
+
+import { Forward, Backspace } from '@material-ui/icons';
 
 function EmployeeDetails(props) {
 
     //const employee = useSelector((state) => state.currentEmployee);
     const dispatch = useDispatch();
     const { employeeId } = useParams();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const employee = useSelector(getSelectedEmployee);
     const loading = useSelector(getLoading);
 
@@ -44,13 +44,13 @@ function EmployeeDetails(props) {
     // }
 
     const goBack = () => {
-        navigate('/employee');
+        //navigate('/employee');
     }
 
     return (
         <div>
             <div className='sub-header'>
-                <span className='pl-16' onClick={() => goBack()}><FaIcons.FaBackward></FaIcons.FaBackward> Back </span>
+                <span className='pl-16' onClick={() => goBack()}><Forward></Forward> Back </span>
             </div>
             <div className="card">
                 {loading ? (<CommonLoaderIcon />) : (

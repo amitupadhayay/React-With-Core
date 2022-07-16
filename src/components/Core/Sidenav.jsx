@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
 import './Navbar.css'
 import '../../App.css'
 import { useLocation } from 'react-router-dom';
@@ -18,6 +16,8 @@ import { createBrowserHistory } from 'history';
 import CoreService from './CoreService';
 import RouteService from '../../Services/RouteService';
 
+import { People, PeopleAlt,PeopleAltOutlined,PeopleAltRounded } from '@material-ui/icons';
+
 
 
 function Sidenav(props) {
@@ -29,7 +29,7 @@ function Sidenav(props) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const history = createBrowserHistory();
-    const location = useLocation();
+    //const location = useLocation();
 
     useEffect(() => {
         getAappMenuList();
@@ -45,10 +45,10 @@ function Sidenav(props) {
 
     const getAappMenuList = () => {
         let menuList = [];
-        menuList.push({ AppCode: "Dashboard", AppName: "Dashboard", url: "/dashboard", icon: <AiIcons.AiFillDashboard></AiIcons.AiFillDashboard> });
-        menuList.push({ AppCode: "Employee", AppName: "Employee", url: "/employee", icon: <FaIcons.FaUserAlt></FaIcons.FaUserAlt> });
-        menuList.push({ AppCode: "EmployeeServer", AppName: "Employee Server", url: "/employeeserver", icon: <FaIcons.FaUserShield></FaIcons.FaUserShield> });
-        menuList.push({ AppCode: "EmployeeReactive", AppName: "Employee Reactive", url: "/employeereactive", icon: <FaIcons.FaUserGraduate></FaIcons.FaUserGraduate> });
+        menuList.push({ AppCode: "Dashboard", AppName: "Dashboard", url: "/dashboard", icon: <People></People> });
+        menuList.push({ AppCode: "Employee", AppName: "Employee", url: "/employee", icon: <PeopleAlt></PeopleAlt> });
+        menuList.push({ AppCode: "EmployeeServer", AppName: "Employee Server", url: "/employeeserver", icon: <PeopleAltRounded></PeopleAltRounded> });
+        menuList.push({ AppCode: "EmployeeReactive", AppName: "Employee Reactive", url: "/employeereactive", icon: <PeopleAltOutlined></PeopleAltOutlined> });
         setAppList(menuList);
     }
 

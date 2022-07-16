@@ -12,8 +12,6 @@ import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 //import Button from "@material-ui/core/Button";
 //import Dialog from '@material-ui/core/Dialog';
 //import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
 import RouteService from '../../Services/RouteService';
@@ -24,10 +22,12 @@ import {
     getApiTransaction, setApiTransaction
 } from '../../redux/slice/employeeSlice';
 import Button from '@material-ui/core/Button';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import DialogComponent from '../../CommonComponent/DialogComponent';
 import { Edit, EditOutlined, EditRounded, DeleteForever } from '@material-ui/icons';
 import { getDialogState, setDialogState } from '../../redux/slice/commonSlice';
+
+import { People, PeopleAlt, PeopleAltOutlined, PeopleAltRounded } from '@material-ui/icons';
 
 
 function EmployeeList(props) {
@@ -45,7 +45,7 @@ function EmployeeList(props) {
     const dialogState = useSelector(getDialogState);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     useEffect(() => {
         getColumns();
@@ -53,12 +53,12 @@ function EmployeeList(props) {
         dispatch(fetchAllEmployee());
     }, [dispatch]);
 
-    useEffect(() => {
-        if (apiTransaction) {
-            dispatch(setApiTransaction(false));
-            dispatch(fetchAllEmployee());
-        }
-    }, [apiTransaction]);
+    // useEffect(() => {
+    //     if (apiTransaction) {
+    //         dispatch(setApiTransaction(false));
+    //         dispatch(fetchAllEmployee());
+    //     }
+    // }, [apiTransaction]);
 
     const getColumns = () => {
         let cols = [];
@@ -125,7 +125,8 @@ function EmployeeList(props) {
     }
 
     const handleRowClicked = row => {
-        navigate(`/employee/${row.Id}`);
+        //navigate(`/employee/${row.Id}`);
+        //navigate(`/employee/${row.id}`);
     };
 
     const handleDialogClose = (resp) => {
@@ -152,14 +153,14 @@ function EmployeeList(props) {
     }
 
     const goToEmployeeServer = () => {
-        navigate('/employeeserver');
+        // navigate('/employeeserver');
     }
 
     return (
         <div>
 
             <div className='sub-header pl-16'>
-                <span onClick={() => attachDialogData(null)}><FaIcons.FaUserPlus></FaIcons.FaUserPlus>  Add Employee</span>
+                <span onClick={() => attachDialogData(null)}><People></People>  Add Employee</span>
             </div>
 
             <div className='pt-36'>
@@ -180,7 +181,7 @@ function EmployeeList(props) {
             </div>
 
             <div>
-                <span onClick={() => goToEmployeeServer()}><FaIcons.FaUserPlus></FaIcons.FaUserPlus> Employee Server</span>
+                <span onClick={() => goToEmployeeServer()}><People></People> Employee Server</span>
             </div>
 
             {/* <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>

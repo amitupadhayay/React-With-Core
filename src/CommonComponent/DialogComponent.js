@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import * as AiIcons from 'react-icons/ai';
 import { ThreeDRotation, Cancel } from '@material-ui/icons';
 
 const DialogComponent = (props) => {
@@ -14,7 +13,7 @@ const DialogComponent = (props) => {
 
     return (
         <>
-            <Dialog open={true} aria-labelledby="form-dialog-title" className='p-8'>
+            <Dialog open={true} aria-labelledby="form-dialog-title">
                 <div style={{
                     width: dialogData.width === undefined ? 'auto' : dialogData.width,
                     height: dialogData.height === undefined ? 'auto' : dialogData.height,
@@ -28,7 +27,9 @@ const DialogComponent = (props) => {
                         </div>
                     </DialogTitle>
                 </div>
-                {dialogData.component}
+                <div className='app-dialog-space'>
+                    {dialogData.component}
+                </div>
             </Dialog >
         </>
     )

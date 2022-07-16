@@ -200,9 +200,17 @@ margin-top: 8px;
     color: red !important;
   }
 
-  .MuiPaper-root {
-    padding: 30px !important;
+  .MuiDialog-paper {
+    overflow: hidden !important;
   }
+
+    /* .MuiDialogTitle-root{
+    padding: 10px !important;
+  } */
+
+  /* .MuiPaper-root {   
+    padding: 10px !important;
+  } */
 
   .dialog-title{
     font-family: var(--mainFontFamily);
@@ -210,14 +218,15 @@ margin-top: 8px;
     background-color: var(--mainColor) !important;
     text-align: left;
     color: #fff;
-    margin: -30px !important;
+    /* margin: -10px !important; */
     text-transform: uppercase;
-    margin-bottom: 10px !important;
+    /* margin-bottom: 10px !important; */
+    /* padding: 10px !important; */
   }
 
-  .MuiDialogTitle-root{
-    padding: 10px !important;
-  }
+.app-dialog-space{
+  padding: 20px;
+}
 
   .flex{
     display: flex;
@@ -225,13 +234,12 @@ margin-top: 8px;
 
   .dialog-close-btn{
     font-size: 32px !important;
-    margin-top: -10px;
-    margin-right: -10px;
+    margin-top: -17px;
+    margin-right: -25px;
     color: lightcoral;
   }
 
   .btn-icon{
-    /* padding-left: 10px; */
     padding-right: 10px;
     font-size:33px !important
   }
@@ -239,12 +247,10 @@ margin-top: 8px;
   svg{
     cursor: pointer;
     font-size: 20px;
-    /* padding-right: 5px; */
   }
 
   .MuiMenuItem-root svg{
     color: var(--mainColor) !important;
-    /* padding-right: 5px; */
   }
 
   .login-mt{
@@ -277,3 +283,5 @@ margin-top: 8px;
   .action-width{
     width: 10px !important;
   }
+
+  

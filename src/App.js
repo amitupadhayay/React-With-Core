@@ -1,16 +1,12 @@
 import './App.css';
 import Navbar from './components/Core/Navbar';
-//import { BrowserRouter as Router} from 'react-router-dom';
-import {BrowserRouter as Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-//import React, { useState, useEffect } from 'react';
-// import Sidenav from './components/Core/Sidenav'
+import { BrowserRouter as Router} from 'react-router-dom';
+//import { Router } from 'react-router-dom';
+import history from './history';
 
-// hiiiiii
+// all chnages
 
 function App() {
-
-  const history = createBrowserHistory();
 
   return (
     <Router history={history}>
