@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react';
-//import { Fragment } from 'react';
-
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
 import Grid from '@material-ui/core/Grid';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-//import Button from "@material-ui/core/Button";
-//import TextField from "@material-ui/core/TextField";
-import { TextField, Button, InputLabel, FormControl, Select, MenuItem } from "@material-ui/core";
+import { TextField, Button, MenuItem } from "@material-ui/core";
 import { Save } from '@material-ui/icons';
 
-import EmployeeService from '../../Services/EmployeeService';
-import { toast } from 'react-toastify';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
 import { getDialogLoading, saveEmployee } from '../../redux/slice/employeeSlice';
-import { getApiTransaction, setApiTransaction, getAllEmployee, fetchAllEmployee, saveEmployeeThunk } from '../../redux/slice/employeeSlice';
 
 import { GlobalVariable } from '../../Constants/global-constant';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
+import TextboxComponent from '../../Controls/TextboxComponent';
+import NumberComponent from '../../Controls/NumberComponent';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -50,10 +41,6 @@ function EmployeeForm(props) {
         list.push({ Text: "Payroll", Value: 3 });
         list.push({ Text: "Third Party", Value: 4 });
         setEmployeeTypeList(list);
-    }
-
-    const employeeTypeChange = (event) => {
-
     }
 
     const setInitialValue = () => {
@@ -94,15 +81,15 @@ function EmployeeForm(props) {
         initialValues: setInitialValue(),
         validationSchema: validationSchema,
         validateOnMount: true,
-        onSubmit: (values) => {
-            //console.log('onSubmit');
-        },
-        onChange: () => {
-            //console.log('onChange');
-        },
-        handleChange: () => {
-            //console.log('handleChange');
-        }
+        // onSubmit: (values) => {
+        //     //console.log('onSubmit');
+        // },
+        // onChange: () => {
+        //     //console.log('onChange');
+        // },
+        // handleChange: () => {
+        //     //console.log('handleChange');
+        // }
     });
 
     const setFormValue = () => {
@@ -147,7 +134,8 @@ function EmployeeForm(props) {
         //formik.touched = true;
         if (formik.isValid) {
             let formData = {
-                EmployeeId: row === null ? null : row?.EmployeeId,
+                Id: row == null ? 0
+                 : row?.Id,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
                 Salary: parseFloat(formik.values.salary),
@@ -155,7 +143,7 @@ function EmployeeForm(props) {
                 Address2: formik.values.address2,
                 CreatedDate: new Date(),
                 ModifiedDate: new Date(),
-                EmployeeType: formik.values.employeetype,
+                EmployeeTypeId: formik.values.employeetype,
                 EmployeeTypeText: employeeTypeList.find(x => x.Value == formik.values.employeetype)?.Text,
             };
 
@@ -187,22 +175,32 @@ function EmployeeForm(props) {
 
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                        <TextField fullWidth variant="outlined" name="firstname" label="First Name" value={formik.values.firstname}
+                        {/* <TextField fullWidth variant="outlined" name="firstname" label="First Name" value={formik.values.firstname}
                             onChange={formik.handleChange} error={formik.touched.firstname && Boolean(formik.errors.firstname)}
                             helperText={formik.touched.firstname && formik.errors.firstname}
-                        ></TextField>
+                        ></TextField> */}
+
+
+                        <TextboxComponent name="firstname" label="First Name" value={formik.values.firstname}
+                            formik={formik}></TextboxComponent>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField fullWidth variant="outlined" name="lastname" label="Last Name" value={formik.values.lastname}
+                        {/* <TextField fullWidth variant="outlined" name="lastname" label="Last Name" value={formik.values.lastname}
                             onChange={formik.handleChange} error={formik.touched.lastname && Boolean(formik.errors.lastname)}
                             helperText={formik.touched.lastname && formik.errors.lastname}
-                        ></TextField>
+                        ></TextField> */}
+
+                        <TextboxComponent name="lastname" label="Last Name" value={formik.values.lastname}
+                            formik={formik}></TextboxComponent>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField fullWidth variant="outlined" name="salary" label="Salary" value={formik.values.salary}
+                        {/* <TextField fullWidth variant="outlined" name="salary" label="Salary" value={formik.values.salary}
                             onChange={formik.handleChange} error={formik.touched.salary && Boolean(formik.errors.salary)}
                             helperText={formik.touched.salary && formik.errors.salary}
-                        ></TextField>
+                        ></TextField> */}
+
+                        <NumberComponent name="salary" label="Salary" value={formik.values.salary}
+                            formik={formik}></NumberComponent>
                     </Grid>
 
                     <Grid item xs={6}>

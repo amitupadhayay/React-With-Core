@@ -38,14 +38,14 @@ export const employeeSlice = createSlice({
             state.selectedEmployee = action.payload;
         },
         saveEmployee: (state, action) => {
-            state.dialogState ? state.dialogLoading = true : state.loading = true;
+            //state.dialogState ? state.dialogLoading = true : state.loading = true;
         },
         saveEmployeeSuceess: (state, action) => {
-            state.dialogState ? state.dialogLoading = false : state.loading = false;
+            // state.dialogState ? state.dialogLoading = false : state.loading = false;
         },
         modifyEmployeeData: (state, action) => {
             let employeeList = JSON.parse(JSON.stringify(state.allEmployee));
-            employeeList = employeeList.filter(x => x.EmployeeId !== action.payload?.EmployeeId);
+            employeeList = employeeList.filter(x => x.Id !== action.payload?.Id);
             state.allEmployee = [action.payload, ...employeeList];
         },
         setCommonError: (state) => {

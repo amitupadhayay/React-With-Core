@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 
 function* fetchAllEmployeeFunc() {
     try {
-        const resp = yield call(() => APIService.get(ControllerName.Employee, 'GetEmployeeListReact()'));
+        const resp = yield call(() => APIService.get(ControllerName.Employee, 'GetEmployeeList()'));
         yield put(fetchAllEmployeeSuccess(resp?.data));
     }
     catch (error) {
@@ -41,13 +41,14 @@ export function* fetchSelectedEmployeeSaga() {
     yield takeEvery('employee/fetchSelectedEmployee', fetchSelectedEmployeeFunc);
 }
 
-function* saveEmployeeFunc(action) {
+function* saveEmployee(action) {
+    console.log(action);
     try {
         const resp = yield call(() => APIService.post(ControllerName.Employee, "AddEditEmployee", action.payload));
-        yield put(saveEmployeeSuceess());
+        //yield put(saveEmployeeSuceess());
         yield put(setDialogState(false));
         yield put(modifyEmployeeData(resp?.data));
-        toast.success(`Employee ${action?.payload?.EmployeeId === null ? 'added' : 'updated'} successfully.`);
+        toast.success(`Employee ${action?.payload?.Id === null ? 'added' : 'updated'} successfully.`);
     }
     catch (error) {
         yield put(setCommonError(error));
@@ -55,7 +56,7 @@ function* saveEmployeeFunc(action) {
 }
 
 export function* saveEmployeeSaga() {
-    yield takeEvery('employee/saveEmployee', saveEmployeeFunc);
+    yield takeEvery('employee/saveEmployee', saveEmployee);
 }
 
 function* deleteEmployeeFunc(action) {

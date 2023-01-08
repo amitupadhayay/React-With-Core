@@ -5,22 +5,34 @@ class APIConfiguration {
   headers = {
     "Content-type": "application/json",
     'Accept': 'application/json',
+    //'charset': 'utf-8',
   }
 
-  mainURL = `https://localhost:44319/api/`;
+  //mainURL = "https://localhost:44312/"
+  mainURL = "https://localhost:44390/"
   //djangoURL = 'http://127.0.0.1:8000/'
 
+  // get = async (ctrl, methodName) => {
+  //   return await axios.get(this.mainURL + ctrl + methodName, this.headers);
+  // }
+
+  // post = async (ctrl, methodName, params) => {
+  //   return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
+  // }
+
   get = async (ctrl, methodName) => {
-    return await axios.get(this.mainURL + ctrl + methodName, this.headers);
+    return await axios.get(this.mainURL + methodName, this.headers);
+  }
+
+  post = async (ctrl, methodName, params) => {
+    return await axios.post(this.mainURL + methodName, params, this.headers);
   }
 
   getData(ctrl, methodName) {
     return axios.get(this.mainURL + ctrl + methodName, this.headers);
   }
 
-  post = async (ctrl, methodName, params) => {
-    return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
-  }
+
 
   delete(ctrl, methodName) {
     return axios.delete(this.mainURL + ctrl + methodName);

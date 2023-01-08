@@ -49,16 +49,8 @@ function EmployeeList(props) {
 
     useEffect(() => {
         getColumns();
-        //dispatch(fetchEmployees());
         dispatch(fetchAllEmployee());
     }, [dispatch]);
-
-    // useEffect(() => {
-    //     if (apiTransaction) {
-    //         dispatch(setApiTransaction(false));
-    //         dispatch(fetchAllEmployee());
-    //     }
-    // }, [apiTransaction]);
 
     const getColumns = () => {
         let cols = [];
@@ -141,11 +133,9 @@ function EmployeeList(props) {
 
     const attachDialogData = (row) => {
         setDialogData({
-            // width: '50vh',
-            // height: '50vh',
             //employeeId: row?.EmployeeId == null ? 0 : row?.EmployeeId,
             row: row,
-            title: row?.EmployeeId == null ? 'Add Employee' : "Edit Employee",
+            title: row?.Id == null ? 'Add Employee' : "Edit Employee",
             component: <EmployeeForm data={row} handleDialogClose={handleDialogClose}></EmployeeForm>
         });
         dispatch(setDialogState(true));
@@ -183,16 +173,6 @@ function EmployeeList(props) {
             <div>
                 <span onClick={() => goToEmployeeServer()}><People></People> Employee Server</span>
             </div>
-
-            {/* <Dialog open={openDialog} aria-labelledby="form-dialog-title" className='p-8'>
-                <DialogTitleComponent data={dialogData} handleDialogClose={handleDialogClose}></DialogTitleComponent>
-                <EmployeeForm data={dialogData} handleDialogClose={handleDialogClose}></EmployeeForm>
-            </Dialog> */}
-
-            {/* <Dialog open={confimDialog} aria-labelledby="form-dialog-title" className='p-8'>
-                <DialogTitleComponent data={dialogData} handleDialogClose={handleDialogClose}></DialogTitleComponent>
-                <ConfirmComponent data={dialogData} confirmDailogClose={confirmDailogClose}></ConfirmComponent>
-            </Dialog> */}
 
             {dialogState && addEmployeePopup ? (
                 <DialogComponent data={dialogData} handleDialogClose={handleDialogClose}>
