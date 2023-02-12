@@ -5,20 +5,14 @@ import * as yup from "yup";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-import CoreService from './CoreService';
-//import Notify, { AlertTypes } from '../../Services/Notify';
-import { toast } from 'react-toastify';
 import Grid from '@material-ui/core/Grid';
 
-import RouteService from '../../Services/RouteService';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-//import { createBrowserHistory } from 'history';
-//import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { authentication, setAuthentication } from '../../redux/slice/commonSlice';
+import { authentication } from '../../redux/slice/commonSlice';
 
-import { Save, SaveAlt } from '@material-ui/icons';
+import { Save} from '@material-ui/icons';
 
 
 function Login(props) {

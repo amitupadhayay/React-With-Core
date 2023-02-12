@@ -14,6 +14,9 @@ import { GlobalVariable } from '../../Constants/global-constant';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 import TextboxComponent from '../../Controls/TextboxComponent';
 import NumberComponent from '../../Controls/NumberComponent';
+import { crudEmployee } from '../../Services/Employee';
+import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 
 // const validationSchema = yup.object({
 //     email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -28,8 +31,17 @@ function EmployeeForm(props) {
     const loading = useSelector(getDialogLoading);
     const [employeeTypeList, setEmployeeTypeList] = useState([]);
 
+    const { mutate: formMutate, isLoading, isError, error } = useMutation(crudEmployee, {
+        onSuccess: () => {
+            props.handleDialogClose(false);
+        },
+        onError: (error) => {
+            toast.error(`something wrong`);
+        }
+    })
+
     useEffect(() => {
-        setFormValue();
+        //setFormValue();
         getEmployeeTypeList();
     }, []);
 
@@ -130,21 +142,20 @@ function EmployeeForm(props) {
         formik.setFieldTouched(e.target.name, true);
     }
 
-    const saveEmplyee = () => {
+    const saveEmployee = () => {
         //formik.touched = true;
         if (formik.isValid) {
             let formData = {
-                Id: row == null ? 0
-                 : row?.Id,
+                Id: row == null ? null : row?.Id,
                 FirstName: formik.values.firstname,
                 LastName: formik.values.lastname,
                 Salary: parseFloat(formik.values.salary),
                 Address1: formik.values.address1,
                 Address2: formik.values.address2,
-                CreatedDate: new Date(),
-                ModifiedDate: new Date(),
+                //CreatedDate: new Date(),
+                //ModifiedDate: new Date(),
                 EmployeeTypeId: formik.values.employeetype,
-                EmployeeTypeText: employeeTypeList.find(x => x.Value == formik.values.employeetype)?.Text,
+                EmployeeTypeText: employeeTypeList?.find(x => x.Value == formik.values?.employeetype)?.Text,
             };
 
             // EmployeeService.saveEmployee(formData)
@@ -162,8 +173,8 @@ function EmployeeForm(props) {
             //         toast.error(error);
             //     });
 
-            dispatch(saveEmployee(formData));
-            //dispatch(saveEmployeeThunk(formData));
+            // dispatch(saveEmployee(formData));
+            formMutate(formData);
         }
     }
 
@@ -175,21 +186,10 @@ function EmployeeForm(props) {
 
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                        {/* <TextField fullWidth variant="outlined" name="firstname" label="First Name" value={formik.values.firstname}
-                            onChange={formik.handleChange} error={formik.touched.firstname && Boolean(formik.errors.firstname)}
-                            helperText={formik.touched.firstname && formik.errors.firstname}
-                        ></TextField> */}
-
-
                         <TextboxComponent name="firstname" label="First Name" value={formik.values.firstname}
                             formik={formik}></TextboxComponent>
                     </Grid>
                     <Grid item xs={6}>
-                        {/* <TextField fullWidth variant="outlined" name="lastname" label="Last Name" value={formik.values.lastname}
-                            onChange={formik.handleChange} error={formik.touched.lastname && Boolean(formik.errors.lastname)}
-                            helperText={formik.touched.lastname && formik.errors.lastname}
-                        ></TextField> */}
-
                         <TextboxComponent name="lastname" label="Last Name" value={formik.values.lastname}
                             formik={formik}></TextboxComponent>
                     </Grid>
@@ -198,7 +198,6 @@ function EmployeeForm(props) {
                             onChange={formik.handleChange} error={formik.touched.salary && Boolean(formik.errors.salary)}
                             helperText={formik.touched.salary && formik.errors.salary}
                         ></TextField> */}
-
                         <NumberComponent name="salary" label="Salary" value={formik.values.salary}
                             formik={formik}></NumberComponent>
                     </Grid>
@@ -222,6 +221,7 @@ function EmployeeForm(props) {
                             helperText={formik.touched.address1 && formik.errors.address1}
                         ></TextField>
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField fullWidth multiline rows={2} maxRows={4} variant="outlined"
                             name="address2" label="Address 2" value={formik.values.address2}
@@ -232,7 +232,7 @@ function EmployeeForm(props) {
 
                     <Grid item xs={7}></Grid>
                     <Grid item xs={5}>
-                        <Button variant="contained" type="submit" onClick={saveEmplyee}>
+                        <Button variant="contained" type="submit" onClick={saveEmployee}>
                             {loading ? <CommonLoaderIcon size={20} text="Saving..." /> : <>
                                 <Save className='btn-icon'></Save>
                                 Save Employee </>

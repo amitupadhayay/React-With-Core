@@ -1,23 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
-import { withStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
+import  {  useEffect } from 'react';
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
 
 import { useDispatch, useSelector } from 'react-redux';
-import EmployeeService from '../../Services/EmployeeService';
-import { fetchCurrentEmployee } from '../../redux/actions/employeeActions';
 import { useParams } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import RouteService from '../../Services/RouteService';
 import { fetchSelectedEmployee, getSelectedEmployee, getLoading } from '../../redux/slice/employeeSlice';
 import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 
-import { Forward, Backspace } from '@material-ui/icons';
+import { Forward } from '@material-ui/icons';
 
 function EmployeeDetails(props) {
 

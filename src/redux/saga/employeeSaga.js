@@ -1,7 +1,6 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import axiosAPI from '../../Services/axiosAPI';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import {
-    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess, saveEmployeeSuceess,
+    fetchAllEmployeeSuccess, fetchSelectedEmployeeSuccess,
     setCommonError, deleteEmployeeSuceess, modifyEmployeeData, removeEmployeeData
 }
     from '../slice/employeeSlice';
@@ -11,7 +10,7 @@ import APIService from '../../Services/APIService';
 import { toast } from 'react-toastify';
 
 
-function* fetchAllEmployeeFunc() {
+function* fetchAllEmployee() {
     try {
         const resp = yield call(() => APIService.get(ControllerName.Employee, 'GetEmployeeList()'));
         yield put(fetchAllEmployeeSuccess(resp?.data));
@@ -22,7 +21,7 @@ function* fetchAllEmployeeFunc() {
 }
 
 export function* fetchAllEmployeeSaga() {
-    yield takeEvery('employee/fetchAllEmployee', fetchAllEmployeeFunc)
+    yield takeEvery('employee/fetchAllEmployee', fetchAllEmployee)
 }
 
 function* fetchSelectedEmployeeFunc(action) {

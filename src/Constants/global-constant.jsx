@@ -12,6 +12,10 @@ export const GlobalVariable = {
 }
 
 export const Controller = {
-    Employee : 'Employee/',
-    Auth : 'Auth/',
+    Employee: 'Employee/',
+    Auth: 'Auth/',
+}
+
+export const UrlConstant = {
+    GetEmployeeList: "GetEmployeeList",
 }

@@ -2,11 +2,14 @@
 import APIConfiguration from '../Services/APIService'
 import ControllerName from '../Constants/global-constant';
 //import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 class EmployeeService {
 
     getEmployeeList = async () => {
-        return await APIConfiguration.get("GetEmployeeList()", ControllerName.Employee);
+        // return await APIConfiguration.get("GetEmployeeList()");
+        const res = await axios.get('https://localhost:44312/api/GetEmployeeList()');
+        return res.data;
     }
 
     getEmployeeDetails = async (employeeId) => {

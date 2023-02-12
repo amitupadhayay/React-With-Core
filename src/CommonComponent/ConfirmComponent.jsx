@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
 import Button from "@material-ui/core/Button";
-import Grid from '@material-ui/core/Grid';
-import { CheckCircle, Cancel } from '@material-ui/icons';
+import { CheckCircle } from '@material-ui/icons';
 
 function ConfirmComponent(props) {
 

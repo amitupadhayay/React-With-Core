@@ -1,7 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
-import APIService from '../../Services/APIService';
-import ControllerName from '../../Constants/global-constant';
 
 const initialState = {
     commonError: "",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import EmployeeForm from './EmployeeForm';
 import EmployeeService from '../../Services/EmployeeService';
 //import ReactTable from "react-table";  
@@ -12,22 +12,32 @@ import CommonLoaderIcon from '../../CommonComponent/CommonLoader';
 //import Button from "@material-ui/core/Button";
 //import Dialog from '@material-ui/core/Dialog';
 //import DialogTitleComponent from '../../CommonComponent/DialogTitleComponent';
-import { toast } from 'react-toastify';
 import ConfirmComponent from '../../CommonComponent/ConfirmComponent';
-import RouteService from '../../Services/RouteService';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEmployees } from '../../redux/actions/employeeActions';
 import {
-    fetchAllEmployee, getLoading, getAllEmployee, getCommonError, deleteEmployee,
-    getApiTransaction, setApiTransaction
+    fetchAllEmployee, getLoading, getAllEmployee, deleteEmployee,
+    getApiTransaction
 } from '../../redux/slice/employeeSlice';
-import Button from '@material-ui/core/Button';
 //import { useNavigate } from 'react-router-dom';
 import DialogComponent from '../../CommonComponent/DialogComponent';
-import { Edit, EditOutlined, EditRounded, DeleteForever } from '@material-ui/icons';
+import { EditRounded, DeleteForever } from '@material-ui/icons';
 import { getDialogState, setDialogState } from '../../redux/slice/commonSlice';
 
-import { People, PeopleAlt, PeopleAltOutlined, PeopleAltRounded } from '@material-ui/icons';
+import { People } from '@material-ui/icons';
+import { useQuery } from "react-query";
+import { UrlConstant } from '../../Constants/global-constant';
+import axios from 'axios';
+import { fetchEmployees, getAllEmployeeList } from '../../Services/Employee';
+
+// const fetchEmployees = async () => {
+//     const res = await fetch('https://localhost:44312/api/GetEmployeeList()');
+//     return res.json();
+// }
+
+// const fetchEmployees = async () => {
+//     const res = await axios.get('https://localhost:44312/api/GetEmployeeList()');
+//     return res.data;
+// }
 
 
 function EmployeeList(props) {
@@ -39,17 +49,19 @@ function EmployeeList(props) {
     const [addEmployeePopup, setAddEmployeePopup] = useState({});
 
     //const employeeList = useSelector((state) => state.allEmployee.employees);
-    const employeeList = useSelector(getAllEmployee);
+    //const employeeList = useSelector(getAllEmployee);
     const loading = useSelector(getLoading);
     const apiTransaction = useSelector(getApiTransaction);
     const dialogState = useSelector(getDialogState);
-
+    //const [employeeList, setEmployeeList] = useState([]);
     const dispatch = useDispatch();
     //const navigate = useNavigate();
 
+    const { isLoading, error, data: employeeList, refetch: fetchEmployeeList } = useQuery("employee", getAllEmployeeList);
+
     useEffect(() => {
         getColumns();
-        dispatch(fetchAllEmployee());
+        // dispatch(fetchAllEmployee());
     }, [dispatch]);
 
     const getColumns = () => {
@@ -125,6 +137,7 @@ function EmployeeList(props) {
         dispatch(setDialogState(resp));
         setAddEmployeePopup(resp);
         setConfirmPopup(resp);
+        fetchEmployeeList();
     };
 
     const handleEdit = (row) => {
@@ -160,7 +173,7 @@ function EmployeeList(props) {
                     data={employeeList}
                     pagination
                     highlightOnHover
-                    progressPending={loading}
+                    progressPending={isLoading}
                     progressComponent={<CommonLoaderIcon size={40} text='Loading... Please Wait' />}
                     persistTableHead
                     selectableRows // add for checkbox selection

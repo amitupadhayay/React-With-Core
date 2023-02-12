@@ -8,8 +8,8 @@ class APIConfiguration {
     //'charset': 'utf-8',
   }
 
-  //mainURL = "https://localhost:44312/"
-  mainURL = "https://localhost:44390/"
+  mainURL = "https://localhost:44312/api/"
+  // mainURL = "https://localhost:44319/api/"
   //djangoURL = 'http://127.0.0.1:8000/'
 
   // get = async (ctrl, methodName) => {
@@ -20,23 +20,23 @@ class APIConfiguration {
   //   return await axios.post(this.mainURL + ctrl + methodName, params, this.headers);
   // }
 
-  get = async (ctrl, methodName) => {
-    return await axios.get(this.mainURL + methodName, this.headers);
-  }
+  // get = async (methodName, ctrl = null) => {
+  //   return await axios.get(this.mainURL + methodName, this.headers);
+  // }
 
-  post = async (ctrl, methodName, params) => {
-    return await axios.post(this.mainURL + methodName, params, this.headers);
-  }
+  // post = async (ctrl, methodName, params) => {
+  //   return await axios.post(this.mainURL + methodName, params, this.headers);
+  // }
 
-  getData(ctrl, methodName) {
-    return axios.get(this.mainURL + ctrl + methodName, this.headers);
-  }
+  // getData(ctrl, methodName) {
+  //   return axios.get(this.mainURL + ctrl + methodName, this.headers);
+  // }
 
 
 
-  delete(ctrl, methodName) {
-    return axios.delete(this.mainURL + ctrl + methodName);
-  }
+  // delete(ctrl, methodName) {
+  //   return axios.delete(this.mainURL + ctrl + methodName);
+  // }
 
   // djangoGet = async (methodName) => {
   //   return await axios.get(this.djangoURL + methodName, this.headers);
@@ -73,6 +73,33 @@ class APIConfiguration {
   // findByTitle(title) {
   //   return http.get(`/tutorials?title=${title}`);
   // }
+
+  //====================== UseQuery Methods==================
+
+  get = async (methodName) => {
+    const response = await axios.get(this.mainURL + methodName, this.headers);
+    return response?.data;
+  };
+
+  get = async (methodName) => {
+    const response = await axios.get(this.mainURL + methodName, this.headers);
+    return response?.data;
+  };
+
+  // export const getPostFn = async (id) => {
+  //   const response = await authApi.get < IPostResponse > (`posts/${id}`);
+  //   return response.data;
+  // };
+
+  post = async (methodName, params) => {
+    const response = await axios.post(this.mainURL + methodName, params, this.headers);
+    return response?.data;
+  }
+
+  delete(ctrl, methodName) {
+    const response = axios.delete(this.mainURL + ctrl + methodName);
+    return response?.data;
+  };
 
 
 }

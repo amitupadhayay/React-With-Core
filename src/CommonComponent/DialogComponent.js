@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ThreeDRotation, Cancel } from '@material-ui/icons';
+import { Cancel } from '@material-ui/icons';
 
 const DialogComponent = (props) => {
 
